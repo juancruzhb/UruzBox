@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32510.428
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UruzBox", "UruzBox\UruzBox.vcxproj", "{1DE76C15-D49D-4DD7-BC2C-233988B7A109}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1DE76C15-D49D-4DD7-BC2C-233988B7A109}.Debug|x64.ActiveCfg = Debug|x64
+		{1DE76C15-D49D-4DD7-BC2C-233988B7A109}.Debug|x64.Build.0 = Debug|x64
+		{1DE76C15-D49D-4DD7-BC2C-233988B7A109}.Debug|x86.ActiveCfg = Debug|Win32
+		{1DE76C15-D49D-4DD7-BC2C-233988B7A109}.Debug|x86.Build.0 = Debug|Win32
+		{1DE76C15-D49D-4DD7-BC2C-233988B7A109}.Release|x64.ActiveCfg = Release|x64
+		{1DE76C15-D49D-4DD7-BC2C-233988B7A109}.Release|x64.Build.0 = Release|x64
+		{1DE76C15-D49D-4DD7-BC2C-233988B7A109}.Release|x86.ActiveCfg = Release|Win32
+		{1DE76C15-D49D-4DD7-BC2C-233988B7A109}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7CC4B885-DFBD-4ADE-A7B9-1AC73FF11F54}
+	EndGlobalSection
+EndGlobal
