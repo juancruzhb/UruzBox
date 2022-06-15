@@ -18,6 +18,7 @@ Alumno AccesoDatos::obtenerAlumno(int reg) {
 	Alumno aux;
 
 	FILE* p = fopen("alumnos.dat", "rb");
+	//if (p == nullptr) return;
 
 	fseek(p, reg * sizeof(Alumno), SEEK_SET);
 	bool ok = fread(&aux, sizeof(Alumno), 1, p);
@@ -26,13 +27,13 @@ Alumno AccesoDatos::obtenerAlumno(int reg) {
 }
 
 bool AccesoDatos::leerDeDisco(int reg) {
-	Alumno aux;
+	//Alumno aux;
 	FILE* p = fopen("alumnos.dat", "rb");
 	if (p == NULL) {
 		return false;
 	}
 	fseek(p, reg * sizeof(Alumno), SEEK_SET);
-	bool ok = fread(&aux, sizeof(Alumno), 1, p);
+	bool ok = fread(this, sizeof(Alumno), 1, p);
 	fclose(p);
 	return ok;
 }

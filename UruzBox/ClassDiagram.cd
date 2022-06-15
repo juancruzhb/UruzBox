@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AccesoDatos">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAQAACAACAAAAAABEAAABAAAIAAAAAAAAAACA=</HashCode>
+      <FileName>AccesoDatos.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Alumno">
+    <Position X="3.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ggCQBBAAAQAAACQAAABAwUKJAAAQABEIAAAAQAIEiAA=</HashCode>
+      <FileName>Alumno.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Asistencia">
+    <Position X="8.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgABAAEAAAAAAAAAAiBAEAgAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Asistencia.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contacto">
+    <Position X="6.75" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAIABAAAAEAAAAAAAAAABAAAIAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Contacto.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fecha">
+    <Position X="6.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAABAEAAAEABAdAAAAAAAAAAIAAAAAAEAA=</HashCode>
+      <FileName>Fecha.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Presentacion">
+    <Position X="0.5" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAACAAAgAABAAAgAAAAIAAAAAAAA=</HashCode>
+      <FileName>Presentacion.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReglasLogicas">
+    <Position X="0.5" Y="3.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAigAAAAAAAAABEAgAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>ReglasLogicas.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

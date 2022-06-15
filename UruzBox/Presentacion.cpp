@@ -3,6 +3,7 @@
 #include "Presentacion.h"
 #include"ReglasLogicas.h"
 using namespace std;
+
 ReglasLogicas _reglasLogicas;
 
 
@@ -37,6 +38,9 @@ int Presentacion::MenuPrincipal()
             break;
         case 4:
             MenuListados();
+            break;
+        case 5:
+            //MenuReportes();
             break;
         case 0:
             cout << "¿Confirma salir? (S/N) ";
@@ -173,6 +177,37 @@ int Presentacion::MenuAsistencias() {
     }
 }
 
+int Presentacion::MenuReportes() {
+    system("cls");
+    int opcion;
+    char confirmarSalida;
+    while (true) {
+        system("cls");
+        cout << "Menu Reportes" << endl;
+        cout << "--------------------------" << endl;
+        cout << "1 - Exportar alumnos" << endl;
+        //cout << "2 - Editar Alumno" << endl;
+        //cout << "3 - Eliminar Alumno" << endl;
+        //cout << "--------------------------" << endl;
+        cout << "0 - Regresar al menu principal" << endl << endl;
+        cout << "Opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1:
+            //mostrarAlumnos();
+            break;
+        case 2:
+            //mostrarAsistencias();
+            break;
+        case 0:
+            cout << "Opcion: ";
+            return 0;
+            break;
+        }
+        cin.ignore();
+    }
+}
 void Presentacion::mostrarAlumnos() {
 
     int cantidad = _reglasLogicas.cantidadDeAlumnos();
