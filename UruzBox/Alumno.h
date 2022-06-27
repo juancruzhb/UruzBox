@@ -13,6 +13,7 @@ public:
 	void setActivo(bool e);
 	void setFechaNac(Fecha fecha);
 	void setContacto(Contacto contacto);
+	void setSuscripcion(int sus);
 
 	int getId();
 	int getDni();

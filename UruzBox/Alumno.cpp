@@ -42,6 +42,10 @@ void  Alumno::setFechaNac(Fecha fecha) {
 void Alumno::setContacto(Contacto contacto) {
 	_contacto = contacto;
 }
+void Alumno::setSuscripcion(int sus)
+{
+	_suscripcion = sus;
+}
 #pragma endregion
 
 #pragma region getters

@@ -9,6 +9,7 @@ class ReglasLogicas
 public:
 	int ingresarAlumno();
 	bool eliminarAlumno(int dni);
+	bool editarAlumno(Alumno alumno);
 	Alumno obtenerAlumno(int reg, int dni = 0);
 	int cantidadDeAlumnos();
 

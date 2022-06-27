@@ -1,10 +1,11 @@
 #pragma once
+#include"Alumno.h"
 class Presentacion
 {
 public:
 	int MenuPrincipal();
 	int MenuAlumnos();
-	int MenuEditarAlumno();
+	int MenuEditarAlumno(Alumno alumno);
 	int MenuListados();
 	int MenuAsistencias();
 	int MenuReportes();

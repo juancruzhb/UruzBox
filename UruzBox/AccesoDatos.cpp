@@ -187,6 +187,3 @@ bool AccesoDatos::grabarConfigDisco(Config config) {
 }
 
 #pragma endregion
-
-//Se ingresa el pago, se graba en el archivo
-//se leen los alumnos y si encuntra el ID 

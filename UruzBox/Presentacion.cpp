@@ -7,6 +7,8 @@ using namespace std;
 
 ReglasLogicas _reglasLogicas;
 
+Alumno opcionesBuscar();
+
 #pragma region Menus
 int Presentacion::MenuPrincipal()
 {
@@ -97,7 +99,10 @@ int Presentacion::MenuAlumnos() {
         }
             break;
         case 2:
-            MenuEditarAlumno();
+        {
+            Alumno alumno = opcionesBuscar();
+            MenuEditarAlumno(alumno);
+        }
             break;
         case 3:
             eliminarAlumno();
@@ -110,7 +115,8 @@ int Presentacion::MenuAlumnos() {
     }
 
 }
-int Presentacion::MenuEditarAlumno() {
+int Presentacion::MenuEditarAlumno(Alumno reg) {
+    Alumno alumno = reg;
     system("cls");
     int opcion;
     char confirmarSalida;
@@ -121,20 +127,72 @@ int Presentacion::MenuEditarAlumno() {
         cout << "1 EDITAR NOMBRE Y APELLIDO" << endl;
         cout << "2 EDITAR DNI" << endl;
         cout << "3 EDITAR FECHA DE NACIMIENTO" << endl;
-        cout << "3 EDITAR CONTACTO" << endl;
-        cout << "4 EDITAR SUSCRIPCION" << endl;
-        //cout << "--------------------------" << endl;
+        cout << "4 EDITAR CONTACTO" << endl;
+        cout << "5 EDITAR SUSCRIPCION" << endl;
+        cout << "--------------------------" << endl;
         cout << "0 - Regresar al menu principal" << endl << endl;
         cout << "Opcion: ";
         cin >> opcion;
 
         switch (opcion) {
         case 1:
-            cout<<"Editar funciona";
+        {
+            std::string nombre, apellido;
+            cout << "Nombre: ";
+            cin >> nombre;
+            cout << "Apellido: ";
+            cin >> apellido;         
+            alumno.setNombre(nombre);
+            alumno.setApellido(apellido);
+            _reglasLogicas.editarAlumno(alumno);
+        }
             break;
         case 2:
-            //mostrarAsistencias();
+        {
+            int dni;
+            cout << "DNI: ";
+            cin >> dni;
+            alumno.setDni(dni);
+            _reglasLogicas.editarAlumno(alumno);
+        }
             break;
+        case 3:
+        {
+            int dd,mm,aa;
+            cout << "DIA: ";
+            cin >> dd;
+            cout << "MES: ";
+            cin >> mm;
+            cout << "ANIO: ";
+            cin >> aa;
+            Fecha fecha(dd, mm, aa);
+            alumno.setFechaNac(fecha);
+            _reglasLogicas.editarAlumno(alumno);
+        }
+            break;
+        case 4:
+        {
+            int cel;
+            std::string email;
+            cout << "CELULAR: ";
+            cin >> cel;
+            cout << "EMAIL: ";
+            cin >> email;
+            Contacto contacto(cel, email);
+            alumno.setContacto(contacto);
+            _reglasLogicas.editarAlumno(alumno);
+        }
+        break;
+        case 5:
+        {
+            int sus;
+            cout << "Suscripcion: (1) 2 veces por semana - (2) 3 veces por semana - (3) Libre:  ";
+            cin >> sus;
+            alumno.setSuscripcion(sus);
+            _reglasLogicas.editarAlumno(alumno);
+        }
+        break;
+
         case 0:
             cout << "Opcion: ";
             return 0;
@@ -576,4 +634,24 @@ void Presentacion::eliminarAlumno() {
 
     }
 
+}
+
+Alumno opcionesBuscar() {
+    system("cls");
+    int opcion, dni;
+    std::string apellido;
+    cout << "¿Como desea buscar?" << endl;
+    cout << "1 - Por DNI" << endl;
+    cout << "2 - Por APELLIDO" << endl;
+    cout << "Opcion: ";
+    cin >> opcion;
+    if (opcion == 1) {
+        system("cls");
+        cout << "Ingrese el DNI: ";
+        cin >> dni;
+        return _reglasLogicas.obtenerAlumno(-1, dni);
+    }
+    else if (opcion == 2) {
+        return _reglasLogicas.obtenerAlumno(-1, dni);
+    }
 }

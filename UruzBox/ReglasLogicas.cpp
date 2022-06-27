@@ -61,6 +61,25 @@ bool ReglasLogicas::eliminarAlumno(int dni) {
 		return false;
 	}
 }
+bool ReglasLogicas::editarAlumno(Alumno alumno) {
+	char opcion;
+	cout << endl << endl;
+	cout << "Uds va a editar al siguiente alumno: " << endl << endl << endl;
+
+	mostrarDatosAlumno(alumno);
+
+	cout << endl;
+	cout << endl << endl << endl << endl;
+
+	cout << "Desea confirmar la edicion? (s/n): ";
+	cin >> opcion;
+	if (tolower(opcion) == 's') {
+		return _accesoDatos.GuardarEnDisco(alumno, alumno.getDni());
+	}
+	else {
+		return false;
+	}
+}
 
 Alumno ReglasLogicas::obtenerAlumno(int reg, int dni) {
 	if (dni == 0) {
