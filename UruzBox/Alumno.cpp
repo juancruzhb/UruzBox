@@ -78,7 +78,11 @@ int   Alumno::getEdad() {
 		return edad - 1;
 	}
 }
-std::string Alumno::getSuscripcion()
+int Alumno::getSuscripcion()
+{
+	return _suscripcion;
+}
+std::string Alumno::getSuscripcionString()
 {
 	std::string suscripcion;
 	if (_suscripcion == 1) {
@@ -87,7 +91,7 @@ std::string Alumno::getSuscripcion()
 	else if (_suscripcion == 2) {
 		suscripcion = "3 por semana";
 	}
-	else {
+	else if(_suscripcion == 3){
 		suscripcion = "Libre";
 	}
 	return suscripcion;

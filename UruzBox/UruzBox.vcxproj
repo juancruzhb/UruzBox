@@ -142,7 +142,10 @@
     <ClCompile Include="AccesoDatos.cpp" />
     <ClCompile Include="Alumno.cpp" />
     <ClCompile Include="Asistencia.cpp" />
+    <ClCompile Include="Pagos.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="Contacto.cpp" />
+    <ClCompile Include="Deudor.cpp" />
     <ClCompile Include="Fecha.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Presentacion.cpp" />
@@ -152,7 +155,10 @@
     <ClInclude Include="AccesoDatos.h" />
     <ClInclude Include="Alumno.h" />
     <ClInclude Include="Asistencia.h" />
+    <ClInclude Include="Pagos.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Contacto.h" />
+    <ClInclude Include="Deudor.h" />
     <ClInclude Include="Fecha.h" />
     <ClInclude Include="Presentacion.h" />
     <ClInclude Include="ReglasLogicas.h" />

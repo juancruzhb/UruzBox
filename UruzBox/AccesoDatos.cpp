@@ -13,6 +13,17 @@ bool AccesoDatos::grabarAlumnoEnDisco(Alumno alumno) {
 	fclose(p);
 	return guardo;
 }
+bool AccesoDatos::GuardarEnDisco(Alumno alumno, int dni) {
+	int reg = obtenerRegistroPorDni(dni);
+	FILE* p = fopen("alumnos.dat", "rb+");
+	if (p == NULL) {
+		return false;
+	}
+	fseek(p, reg * sizeof(Alumno), SEEK_SET);
+	bool guardo = fwrite(&alumno, sizeof(Alumno), 1, p);
+	fclose(p);
+	return guardo;
+}
 
 Alumno AccesoDatos::obtenerAlumno(int reg) {
 	Alumno aux;
@@ -113,3 +124,69 @@ int AccesoDatos::cantidad_registros_asistencias() {
 	return cantidad;
 }
 #pragma endregion
+
+#pragma region Manipulacion de Pagos
+bool AccesoDatos::grabarPagoEnDisco(Pagos pago) {
+	FILE* p = fopen("pagos.dat", "ab");
+	if (p == NULL) {
+		return false;
+	}
+	bool guardo = fwrite(&pago, sizeof(Pagos), 1, p);
+	fclose(p);
+	return guardo;
+}
+int AccesoDatos::cantidad_registros_pagos() {
+	FILE* p = fopen("pagos.dat", "rb");
+	if (p == NULL) {
+		return 0;
+	}
+
+	int cantidad;
+	size_t bytes;
+
+	fseek(p, 0, SEEK_END);
+	bytes = ftell(p);
+	fclose(p);
+	cantidad = bytes / sizeof(Pagos);
+	return cantidad;
+}
+Pagos AccesoDatos::obtenerPago(int reg) {
+	Pagos aux;
+	FILE* p = fopen("pagos.dat", "rb");
+	fseek(p, reg * sizeof(Pagos), SEEK_SET);
+	bool ok = fread(&aux, sizeof(Pagos), 1, p);
+	fclose(p);
+	return aux;
+}
+#pragma endregion
+
+#pragma region config
+float AccesoDatos::obtenerImporte(int tipoSus) {
+	Config aux;
+
+	FILE* p = fopen("config.dat", "rb");
+	if (p == nullptr) return 0;
+	for (int i = 0; i < 3; i++) {
+		fseek(p, i * sizeof(Config), SEEK_SET);
+		fread(&aux, sizeof(Config), 1, p);
+		if (tipoSus == 1)return aux.getT1();
+		if (tipoSus == 2)return aux.getT2();
+		if (tipoSus == 3)return aux.getT3();
+	}
+	return 0;
+
+}
+bool AccesoDatos::grabarConfigDisco(Config config) {
+	FILE* p = fopen("config.dat", "wb");
+	if (p == NULL) {
+		return false;
+	}
+	bool guardo = fwrite(&config, sizeof(config), 1, p);
+	fclose(p);
+	return guardo;
+}
+
+#pragma endregion
+
+//Se ingresa el pago, se graba en el archivo
+//se leen los alumnos y si encuntra el ID 

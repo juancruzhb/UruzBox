@@ -17,7 +17,8 @@ public:
 	int getId();
 	int getDni();
 	int getEdad();
-	std::string getSuscripcion();
+	int getSuscripcion();
+	std::string getSuscripcionString();
 	std::string getNombre();
 	std::string getApellido();
 	std::string mostrarFechaAlta();
