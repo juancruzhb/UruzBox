@@ -28,8 +28,15 @@ int ReglasLogicas::ingresarAlumno() {
 	while (op) {
 		Alumno alumno = solicitarDatosAlumno();
 		if (confirmarIngreso(alumno)) {
-			_accesoDatos.grabarAlumnoEnDisco(alumno);
-			return alumno.getDni();
+			if (alumno.getId() < _accesoDatos.cantidad_registros_alumnos() + 1) {
+				alumno.setActivo(true);
+				_accesoDatos.GuardarEnDisco(alumno, alumno.getDni());
+				return alumno.getDni();
+			}
+			else {
+				_accesoDatos.grabarAlumnoEnDisco(alumno);
+				return alumno.getDni();
+			}
 		}
 	}
 }
@@ -116,6 +123,7 @@ void mostrarDatosAlumno(Alumno reg) {
 }
 Alumno solicitarDatosAlumno() {
 	system("cls");
+	char opcion;
 	int id = _accesoDatos.cantidad_registros_alumnos() + 1;
 	int dni, dia, mes, anio, celular, suscripcion;
 	string nombre;
@@ -123,6 +131,14 @@ Alumno solicitarDatosAlumno() {
 	string mail; 
 	cout << "DNI: ";
 	cin >> dni;
+	int reg = _accesoDatos.obtenerRegistroPorDni(dni);
+	if (reg !=-1) {
+		cout << "El alumno ya existe en los registros, desea recuperar datos? (s/n)" << endl;
+		cin >> opcion;
+		if (tolower(opcion) == 's') {
+			return _accesoDatos.obtenerAlumno(reg);
+		}
+	}
 	cout << "Apellido: ";
 	cin >> apellido;
 	cout << "Nombre: ";
