@@ -48,8 +48,7 @@ int ReglasLogicas::ingresarAlumno() {
 		}
 	}
 }
-bool ReglasLogicas::eliminarAlumno(int dni) {
-	Alumno alumno = obtenerAlumno(-1, dni);
+bool ReglasLogicas::eliminarAlumno(Alumno alumno) {
 	char opcion;
 	cout << endl << endl;
 	cout << "Uds va a eliminar al siguiente alumno: " << endl << endl << endl;
@@ -63,7 +62,7 @@ bool ReglasLogicas::eliminarAlumno(int dni) {
 	cin >> opcion;
 	if (tolower(opcion) == 's') {
 		alumno.setActivo(false);
-		return _accesoDatos.GuardarEnDisco(alumno, dni);
+		return _accesoDatos.GuardarEnDisco(alumno, alumno.getDni());
 	}
 	else {
 		return false;
@@ -193,14 +192,14 @@ Alumno ReglasLogicas::obtenerAlumnoConApellidoRepetido(std::string apellido) {
 	Alumno* aux = new Alumno[cantidad];
 	for (int i = 0; i < cantidad; i++) {
 		aux[i] = _accesoDatos.obtenerAlumno(i);
-		if (aux[i].getApellido() == apellido) {
+		if (aux[i].getApellido() == apellido && aux[i].getActivo()) {
 			mismoApellido++;
 		}
 	}
 	int pos = 0;
 	Alumno* alumnos = new Alumno[mismoApellido];
 	for (int j = 0; j < cantidad; j++) {
-		if (aux[j].getApellido() == apellido) {
+		if (aux[j].getApellido() == apellido && aux[j].getActivo()) {
 			alumnos[pos] = aux[j];
 			pos++;
 		}

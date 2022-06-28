@@ -554,6 +554,7 @@ void Presentacion::configurar() {
     }
 }
 void Presentacion::exportarAlumnos() {
+    //TODO: exportar a csv
     int cantAlumnos = _reglasLogicas.cantidadDeAlumnos();
     Alumno *alumnos = new Alumno[cantAlumnos];
     if (alumnos == nullptr)return;
@@ -572,30 +573,14 @@ void Presentacion::exportarAlumnos() {
 }
 void Presentacion::eliminarAlumno() {
     system("cls");
-    int opcion;
-    int dni;
-    cout << "1 - Eliminar por DNI" << endl;
-    cout << "2 - Eliminar por APELLIDO" << endl;
-    cout << "Opcion: ";
-    cin >> opcion;
-    if (opcion == 1) {
-        cout << endl;
-        cout << "Ingrese el DNI: ";
-        cin >> dni;
-        while (!_reglasLogicas.existeAlumno(dni)) {
-            cout << "No se ha encontrado el DNI en la base de datos. Ingreselo nuevamente (0 para salir):";
-            cin >> dni;
-            if (dni == 0) return;
-        }
-        if (_reglasLogicas.eliminarAlumno(dni)) {
-            cout << "Se ha eliminado el alumno correctamente" << endl;
-        }
 
-        //TODO: Hacer 2 funciones de obtener alumn
-
-        system("pause");
-
+    Alumno alumno = opcionesBuscar();
+    if (_reglasLogicas.eliminarAlumno(alumno)){
+        cout<<endl<<"Se ha eliminado el alumno correctamente";
     }
+
+    system("pause");
+
 
 }
 
