@@ -34,6 +34,8 @@ public:
 #pragma region Config
 	float obtenerImporte(int tipoSus);
 	bool grabarConfigDisco(Config config);
+	int cantidad_registros_config();
+	Config obtenerConfig(int reg);
 #pragma endregion
 
 };

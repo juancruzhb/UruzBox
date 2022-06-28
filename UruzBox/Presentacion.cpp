@@ -8,6 +8,8 @@ using namespace std;
 ReglasLogicas _reglasLogicas;
 
 Alumno opcionesBuscar();
+bool nuevaConfiguracion();
+void verConfiguracionActual();
 
 #pragma region Menus
 int Presentacion::MenuPrincipal()
@@ -47,7 +49,7 @@ int Presentacion::MenuPrincipal()
             MenuReportes();
             break;
         case 6:
-            configurar();
+            Menuconfigurar();
             break;
         case 0:
             cout << "¿Confirma salir? (S/N) ";
@@ -509,7 +511,7 @@ void Presentacion::mostrarPagos() {
     system("pause");
     system("cls");
 }
-void Presentacion::configurar() {
+int Presentacion::Menuconfigurar() {
     system("cls");
     int opcion;
     char confirmarSalida;
@@ -518,36 +520,29 @@ void Presentacion::configurar() {
         cout << "CONFIGURACION" << endl;
         cout << "--------------------------" << endl;
         cout << "1 - Modificar valores de la cuota" << endl;
-        //cout << "2 - Editar Alumno" << endl;
+        cout << "2 - Ver valor actuales" << endl;
         //cout << "3 - Eliminar Alumno" << endl;
         //cout << "--------------------------" << endl;
         cout << "0 - Regresar al menu principal" << endl << endl;
         cout << "Opcion: ";
         cin >> opcion;
         
-        float tipo1, tipo2, tipo3;
         switch (opcion) {
         case 1:
         {
-            system("cls");
-            cout << "Nuevo precio para 2 veces por semana: ";
-            cin >> tipo1;
-            cout << "Nuevo precio para 3 veces por semana: ";
-            cin >> tipo2;
-            cout << "Nuevo precio modalidad libre: ";
-            cin >> tipo3;
-            Config config(tipo1, tipo2, tipo3);
-            if (_reglasLogicas.ingresarConfig(config)) {
-                cout << endl;
-                cout << "CAMBIOS GUARDADOS" << endl << endl;
-            }
-            system("pause");
+            nuevaConfiguracion();
         }
                     
             break;
+        case 2:
+        {
+            verConfiguracionActual();
+        }
+
+        break;
         case 0:
             cout << "Opcion: ";
-            return;
+            return 0;
             break;
         }
         cin.ignore();
@@ -618,4 +613,50 @@ Alumno opcionesBuscar() {
         system("pause");
         return seleccionado;
     }
+}
+bool nuevaConfiguracion() {
+    float tipo1, tipo2, tipo3;
+    system("cls");
+    cout << "Nuevo precio para 2 veces por semana: ";
+    cin >> tipo1;
+    cout << "Nuevo precio para 3 veces por semana: ";
+    cin >> tipo2;
+    cout << "Nuevo precio modalidad libre: ";
+    cin >> tipo3;
+    Config config(tipo1, tipo2, tipo3);
+    if (_reglasLogicas.ingresarConfig(config)) {
+        cout << endl;
+        cout << "CAMBIOS GUARDADOS" << endl << endl;
+        system("pause");
+        return true;
+    }
+    cout << "NO SE HAN PODIDO APLICAR LOS CAMBIOS" << endl << endl;
+    system("pause");
+}
+void verConfiguracionActual() {
+    int size = _reglasLogicas.cantidadConfig();
+    Config* actual = new Config[size];
+    if (actual == nullptr)return;
+    for (int i = 0; i < size; i++) {
+        actual[i] = _reglasLogicas.obtenerConfig(i);
+    }
+    system("cls");
+    cout << left;
+    cout << setw(20) << "2 VECES POR SEMANA";
+    cout << setw(20) << "3 VECES POR SEMANA";
+    cout << setw(20) << "       LIBRE      " << endl;
+
+    cout << "-------------------------------------------------------" << endl;
+
+    for (int i = 0; i < size; i++) {
+         cout << left;
+         cout << setw(20) << actual[i].getT1();
+         cout << setw(20) << actual[i].getT2();
+         cout << setw(20) << actual[i].getT3();
+         cout << endl;
+
+    }
+
+    delete[]actual;
+    system("pause");
 }

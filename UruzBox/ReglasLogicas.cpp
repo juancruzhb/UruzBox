@@ -311,5 +311,10 @@ float ReglasLogicas::obtenerImporte(int tipoSus) {
 bool ReglasLogicas::ingresarConfig(Config config) {
 	return _accesoDatos.grabarConfigDisco(config);
 }
-
+int ReglasLogicas::cantidadConfig() {
+	return _accesoDatos.cantidad_registros_config();
+}
+Config ReglasLogicas::obtenerConfig(int reg) {
+	return _accesoDatos.obtenerConfig(reg);
+}
 #pragma endregion

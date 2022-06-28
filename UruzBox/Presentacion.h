@@ -10,12 +10,12 @@ public:
 	int MenuAsistencias();
 	int MenuReportes();
 	int MenuCobranzas();
+	int Menuconfigurar();
 	void mostrarAlumnos();
 	void mostrarAsistencias();
 	void mostrarPagos();
 	void cobrarCuota(int Ndni = 0);
 	void exportarAlumnos();
 	void eliminarAlumno();
-	void configurar();
 };
 

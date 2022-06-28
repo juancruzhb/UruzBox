@@ -185,5 +185,27 @@ bool AccesoDatos::grabarConfigDisco(Config config) {
 	fclose(p);
 	return guardo;
 }
+int AccesoDatos::cantidad_registros_config() {
+	FILE* p = fopen("config.dat", "rb");
+	if (p == NULL) {
+		return 0;
+	}
 
+	int cantidad;
+	size_t bytes;
+
+	fseek(p, 0, SEEK_END);
+	bytes = ftell(p);
+	fclose(p);
+	cantidad = bytes / sizeof(Config);
+	return cantidad;
+}
+Config AccesoDatos::obtenerConfig(int reg) {
+	Config aux;
+	FILE* p = fopen("config.dat", "rb");
+	fseek(p, reg * sizeof(Config), SEEK_SET);
+	bool ok = fread(&aux, sizeof(Config), 1, p);
+	fclose(p);
+	return aux;
+}
 #pragma endregion
