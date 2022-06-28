@@ -27,6 +27,6 @@ public:
 	bool existeAlumno(int dni);
 
 
-	void obtenerAlumnosRepetidosPorApellido(std::string apellido);
+	Alumno obtenerAlumnoConApellidoRepetido(std::string apellido);
 };
 

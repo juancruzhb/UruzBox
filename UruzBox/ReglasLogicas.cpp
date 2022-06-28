@@ -4,6 +4,7 @@
 #include "Fecha.h"
 #include"AccesoDatos.h"
 #include <iomanip>
+#include <vector>
 using namespace std;
 
 AccesoDatos _accesoDatos;
@@ -179,7 +180,7 @@ Alumno solicitarDatosAlumno() {
 	Alumno alumno(id, dni, apellido, nombre,fecha , contacto, suscripcion);
 	return alumno;
 }
-void ReglasLogicas::obtenerAlumnosRepetidosPorApellido(std::string apellido) {
+Alumno ReglasLogicas::obtenerAlumnoConApellidoRepetido(std::string apellido) {
 	int mismoApellido = 0;
 	int cantidad = _accesoDatos.cantidad_registros_alumnos();
 	Alumno* aux = new Alumno[cantidad];
@@ -198,8 +199,45 @@ void ReglasLogicas::obtenerAlumnosRepetidosPorApellido(std::string apellido) {
 		}
 	}
 
+	cout << endl;
+	cout << "SELECCIONE El ALUMNO QUE DESEA: " << endl << endl;
+	for (int i = 0; i < mismoApellido; i++) {
+		cout << i + 1 << "- " << alumnos[i].getApellido() << ", " << alumnos[i].getNombre() << " - " << alumnos[i].getDni() << endl;
+	}
+	int opcion;
+	cout << "OPCION: ";
+	cin >> opcion;
+	
+	delete aux;
+	delete alumnos;
+	return alumnos[opcion - 1];
+
 
 }
+
+/*std::vector<Alumno> alumnosConElMismoApellido(std::string apellido) {
+	int mismoApellido = 0;
+	int size = _accesoDatos.cantidad_registros_alumnos();
+	Alumno *todos = new Alumno[size];
+	for (int i = 0; i < size; i++) {
+		todos[i] = _accesoDatos.obtenerAlumno(i);
+		if (todos[i].getApellido() == apellido) {
+			mismoApellido++;
+		}
+	}
+	std::vector<Alumno> alumnos(mismoApellido);
+	int pos = 0;
+
+	for (int j = 0; j < size; j++) {
+		if (alumnos[j].getApellido() == apellido) {
+			alumnos[pos] = todos[j];
+			pos++;
+		}
+	}
+	delete todos;
+	return alumnos;
+
+}*/
 #pragma endregion
 
 #pragma region Manipulacion de Asistencias

@@ -654,8 +654,10 @@ Alumno opcionesBuscar() {
     else if (opcion == 2) {
         cout << "Apellido: ";
         cin >> apellido;
-        _reglasLogicas.obtenerAlumnosRepetidosPorApellido(apellido);
+        Alumno seleccionado = _reglasLogicas.obtenerAlumnoConApellidoRepetido(apellido);
+        cout << endl << endl;
+        cout << "Ha seleccionado: " << seleccionado.getApellido() << ", " << seleccionado.getNombre() << endl;
         system("pause");
-        return _reglasLogicas.obtenerAlumno(-1, dni);
+        return seleccionado;
     }
 }
