@@ -162,6 +162,7 @@
     <ClInclude Include="Fecha.h" />
     <ClInclude Include="Presentacion.h" />
     <ClInclude Include="ReglasLogicas.h" />
+    <ClInclude Include="rlutil.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
