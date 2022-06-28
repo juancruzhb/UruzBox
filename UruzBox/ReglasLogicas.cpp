@@ -179,6 +179,27 @@ Alumno solicitarDatosAlumno() {
 	Alumno alumno(id, dni, apellido, nombre,fecha , contacto, suscripcion);
 	return alumno;
 }
+void ReglasLogicas::obtenerAlumnosRepetidosPorApellido(std::string apellido) {
+	int mismoApellido = 0;
+	int cantidad = _accesoDatos.cantidad_registros_alumnos();
+	Alumno* aux = new Alumno[cantidad];
+	for (int i = 0; i < cantidad; i++) {
+		aux[i] = _accesoDatos.obtenerAlumno(i);
+		if (aux[i].getApellido() == apellido) {
+			mismoApellido++;
+		}
+	}
+	int pos = 0;
+	Alumno* alumnos = new Alumno[mismoApellido];
+	for (int j = 0; j < cantidad; j++) {
+		if (aux[j].getApellido() == apellido) {
+			alumnos[pos] = aux[j];
+			pos++;
+		}
+	}
+
+
+}
 #pragma endregion
 
 #pragma region Manipulacion de Asistencias

@@ -652,6 +652,10 @@ Alumno opcionesBuscar() {
         return _reglasLogicas.obtenerAlumno(-1, dni);
     }
     else if (opcion == 2) {
+        cout << "Apellido: ";
+        cin >> apellido;
+        _reglasLogicas.obtenerAlumnosRepetidosPorApellido(apellido);
+        system("pause");
         return _reglasLogicas.obtenerAlumno(-1, dni);
     }
 }

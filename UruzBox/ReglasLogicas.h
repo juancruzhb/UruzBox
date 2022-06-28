@@ -26,5 +26,7 @@ public:
 	bool ingresarConfig(Config config);
 	bool existeAlumno(int dni);
 
+
+	void obtenerAlumnosRepetidosPorApellido(std::string apellido);
 };
 
