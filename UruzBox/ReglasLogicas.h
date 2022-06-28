@@ -13,8 +13,7 @@ public:
 	Alumno obtenerAlumno(int reg, int dni = 0);
 	int cantidadDeAlumnos();
 
-	bool ingresarAsistenciaPorDni();
-	bool ingresarAsistenciaPorApellido();
+	bool ingresarAsistencia(Alumno alumno);
 	Asistencia obtenerAsistencia(int reg);
 	int cantidadDeAsistencias();
 	bool ingresarPago(int idAlumno, float importe, Fecha desde, Fecha hasta);
@@ -25,6 +24,7 @@ public:
 
 	bool ingresarConfig(Config config);
 	bool existeAlumno(int dni);
+	bool existeAlumnoPorApellido(std::string apellido);
 
 
 	Alumno obtenerAlumnoConApellidoRepetido(std::string apellido);

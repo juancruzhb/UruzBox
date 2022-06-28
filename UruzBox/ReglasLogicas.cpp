@@ -24,6 +24,13 @@ bool ReglasLogicas::existeAlumno(int dni) {
 	}
 	return _accesoDatos.leerDeDisco(reg);
 }
+bool ReglasLogicas::existeAlumnoPorApellido(std::string apellido) {
+	int reg = _accesoDatos.obtenerRegistroPorApellido(apellido);
+	if (reg < 0) {
+		return false;
+	}
+	return _accesoDatos.leerDeDisco(reg);
+}
 int ReglasLogicas::ingresarAlumno() {
 	bool op = true;
 	while (op) {
@@ -208,9 +215,11 @@ Alumno ReglasLogicas::obtenerAlumnoConApellidoRepetido(std::string apellido) {
 	cout << "OPCION: ";
 	cin >> opcion;
 	
+	Alumno seleccionado = alumnos[opcion - 1];
+
 	delete aux;
 	delete alumnos;
-	return alumnos[opcion - 1];
+	return seleccionado;
 
 
 }
@@ -242,50 +251,11 @@ Alumno ReglasLogicas::obtenerAlumnoConApellidoRepetido(std::string apellido) {
 
 #pragma region Manipulacion de Asistencias
 
-bool ReglasLogicas::ingresarAsistenciaPorDni() {
+bool ReglasLogicas::ingresarAsistencia(Alumno alumno) {
 	int id = cantidadDeAsistencias() + 1;
-	int dni;
-	bool ok;
-	cout << "Ingrese el DNI: ";
-	cin >> dni;
-	if (_accesoDatos.obtenerRegistroPorDni(dni)>=0) {
-		Alumno aux = _accesoDatos.obtenerAlumno(_accesoDatos.obtenerRegistroPorDni(dni));
-		Asistencia asistencia(id, aux.getId());
-		if (_accesoDatos.grabarAsistenciaEnDisco(asistencia)) {
-			ok = true;
-		}
-		else {
-			ok = false;
-		}
-	}
-	else {
-		ok = false;
-	}
-	
-	return ok;
-}
-bool ReglasLogicas::ingresarAsistenciaPorApellido() {
-	//TODO: discriminar min y mayus. Ver si hay 2 apellidos iguales
-	int id = cantidadDeAsistencias() + 1;
-	std::string apellido;
-	bool ok;
-	cout << "Ingrese el Apellido: ";
-	cin >> apellido;
-	if (_accesoDatos.obtenerRegistroPorApellido(apellido) >= 0) {
-		Alumno aux = _accesoDatos.obtenerAlumno(_accesoDatos.obtenerRegistroPorApellido(apellido));
-		Asistencia asistencia(id, aux.getId());
-		if (_accesoDatos.grabarAsistenciaEnDisco(asistencia)) {
-			ok = true;
-		}
-		else {
-			ok = false;
-		}
-	}
-	else {
-		ok = false;
-	}
-
-	return ok;
+	int idAlumno = alumno.getId();
+	Asistencia asistencia(id, idAlumno);
+	return _accesoDatos.grabarAsistenciaEnDisco(asistencia);
 }
 
 Asistencia ReglasLogicas::obtenerAsistencia(int reg) {

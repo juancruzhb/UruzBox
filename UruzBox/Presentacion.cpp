@@ -237,49 +237,12 @@ int Presentacion::MenuListados() {
 
 }
 int Presentacion::MenuAsistencias() {
-    system("cls");
-    int opcion;
-    char confirmarSalida;
-    while (true) {
-        system("cls");
-        cout << "Ingresar la asistencia por:" << endl;
-        cout << "--------------------------" << endl;
-        cout << "1 - DNI" << endl;
-        cout << "2 - Apellido" << endl;
-        cout << "--------------------------" << endl;
-        cout << "0 - Volver al Menu principal" << endl << endl;
-
-        cout << "Opcion: ";
-        cin >> opcion;
-
-        switch (opcion) {
-        case 1:
-            if (_reglasLogicas.ingresarAsistenciaPorDni()) {
-                cout << endl << endl;
-                cout << "Se ha ingresado una asistencia con exito"<<endl<<endl;
-            }
-            else {
-                cout << "Corrobore los datos" << endl;
-            }
-            system("pause");
-            
-            break;
-        case 2:
-            if (_reglasLogicas.ingresarAsistenciaPorApellido()) {
-                cout << endl << endl;
-                cout << "Se ha ingresado una asistencia con exito" << endl << endl;
-            }
-            else {
-                cout << "Corrobore los datos" << endl;
-            }
-            system("pause");
-            break;
-        case 0:
-            return 0;
-            break;
-        }
-        cin.ignore();
+    if (_reglasLogicas.ingresarAsistencia(opcionesBuscar())) {
+        cout << endl << endl;
+        cout << "Se ha ingreado la asistencia con exito" << endl;
+        system("pause");
     }
+    return 0;
 }
 int Presentacion::MenuReportes() {
     system("cls");
@@ -649,11 +612,21 @@ Alumno opcionesBuscar() {
         system("cls");
         cout << "Ingrese el DNI: ";
         cin >> dni;
-        return _reglasLogicas.obtenerAlumno(-1, dni);
+        while (!_reglasLogicas.existeAlumno(dni)) {
+            cout << endl << "EL DNI INGRESADO NO SE ENCUENTRA EN EL REGISTRO" << endl;
+            cout << "Ingrese el DNI: ";
+            cin >> dni;
+        }
+            return _reglasLogicas.obtenerAlumno(-1, dni);
     }
     else if (opcion == 2) {
         cout << "Apellido: ";
         cin >> apellido;
+        while (!_reglasLogicas.existeAlumnoPorApellido(apellido)) {
+            cout << endl << "EL APELLIDO INGRESADO NO SE ENCUENTRA EN EL REGISTRO" << endl;
+            cout << "Ingrese el apellido: ";
+            cin >> apellido;
+        }
         Alumno seleccionado = _reglasLogicas.obtenerAlumnoConApellidoRepetido(apellido);
         cout << endl << endl;
         cout << "Ha seleccionado: " << seleccionado.getApellido() << ", " << seleccionado.getNombre() << endl;
