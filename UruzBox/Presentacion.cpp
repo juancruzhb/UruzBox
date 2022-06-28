@@ -8,6 +8,7 @@ using namespace std;
 ReglasLogicas _reglasLogicas;
 
 Alumno opcionesBuscar();
+Fecha obtenerFechaHasta(Fecha desde);
 bool nuevaConfiguracion();
 void verConfiguracionActual();
 
@@ -433,7 +434,7 @@ void Presentacion::cobrarCuota(int Ndni) {
     //ultimoPago.getIdAlumno() == id)
     if (true) {
         Fecha desde = ultimoPago.getFechaHasta();
-        Fecha hasta(desde.getDia(), desde.getMes() + 1, desde.getAnio());
+        Fecha hasta = obtenerFechaHasta(desde);
         cout << left;
         cout << setw(15) << "APELLIDO";
         cout << setw(15) << "NOMBRE";
@@ -613,6 +614,36 @@ Alumno opcionesBuscar() {
         system("pause");
         return seleccionado;
     }
+}
+Fecha obtenerFechaHasta(Fecha desde) {
+    Fecha hasta;
+    int dd = desde.getDia();
+    int mm = desde.getMes();
+    int aa = desde.getAnio();
+
+    if (dd > 28 && mm == 1) {
+        hasta.setDia(1);
+        hasta.setMes(3);
+        hasta.setAnio(aa);
+        return hasta;
+    }
+    if (dd == 31 && (mm == 1 || mm == 3 || mm == 5 || mm == 8 || mm == 10)){
+        hasta.setDia(1);
+        hasta.setMes(mm + 2);
+        hasta.setAnio(aa);
+        return hasta;
+    }
+    if (mm == 12) {
+        hasta.setDia(desde.getDia());
+        hasta.setMes(1);
+        hasta.setAnio(desde.getAnio() + 1);
+        return hasta;
+    }
+    hasta.setAnio(desde.getAnio());
+    hasta.setMes(desde.getMes() + 1);
+    hasta.setDia(desde.getDia());
+    return hasta;
+
 }
 bool nuevaConfiguracion() {
     float tipo1, tipo2, tipo3;
