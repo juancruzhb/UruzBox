@@ -10,6 +10,7 @@ public:
 	int MenuAsistencias();
 	int MenuReportes();
 	int MenuCobranzas();
+	int MenuConsultas();
 	int Menuconfigurar();
 	void mostrarAlumnos();
 	void ConsultaAlumno(int reg);

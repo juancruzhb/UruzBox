@@ -52,10 +52,7 @@ int Presentacion::MenuPrincipal()
             break;
         case 5: 
         {
-            //ConsultaAlumno(opcionesBuscar());     
-            int reg = opcionesBuscar();
-            //mostrarAsistencias(reg);
-            mostrarPagos(reg);
+            MenuConsultas();
         }
             break;
         case 6:
@@ -327,6 +324,49 @@ int Presentacion::MenuCobranzas() {
         case 2:
             //mostrarAsistencias();
             break;
+        case 0:
+            cout << "Opcion: ";
+            return 0;
+            break;
+        }
+        cin.ignore();
+    }
+}
+int Presentacion::MenuConsultas() {
+    system("cls");
+    int opcion;
+    char confirmarSalida;
+    while (true) {
+        system("cls");
+        cout << "Menu Consultas" << endl;
+        cout << "--------------------------" << endl;
+        cout << "1 - Ficha de Alumno" << endl;
+        cout << "2 - Asistencias por Alumno" << endl;
+        cout << "3 - Pagos por alumno" << endl;
+        cout << "0 - Regresar al menu principal" << endl << endl;
+        cout << "Opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1:
+            {
+                int reg = opcionesBuscar();
+                ConsultaAlumno(reg);
+            }
+            break;
+
+        case 2:
+        {
+            int reg = opcionesBuscar();
+            mostrarAsistencias(reg);
+        }
+            break;
+        case 3:
+        {
+            int reg = opcionesBuscar();
+            mostrarPagos(reg);
+        }
+        break;
         case 0:
             cout << "Opcion: ";
             return 0;
