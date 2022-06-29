@@ -9,7 +9,9 @@ using namespace std;
 int main() {
 
 	Presentacion _presentacion;
-	_presentacion.MenuPrincipal();
+	//_presentacion.MenuPrincipal();
+
+	_presentacion.mostrarCuotasAtrasadas();
 
 
 	return 0;

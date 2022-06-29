@@ -520,6 +520,52 @@ void Presentacion::mostrarPagos() {
     system("cls");
 }
 void Presentacion::mostrarCuotasAtrasadas() {
+    int size = _reglasLogicas.cantidadDeAlumnos();
+
+    Deudor* deudores = new Deudor[size];
+
+    if (deudores == nullptr) {
+        cout << endl;
+        cout << "Error al mostrar los alumnos" << endl << endl;
+        return;
+    }
+
+    for (int i = 0; i < size; i++) {
+        deudores[i] = _reglasLogicas.obtenerDeudor(i);
+    }
+
+    system("cls");
+
+    cout << left;
+    cout << setw(8) << "PAGO NUMERO";
+    cout << setw(15) << "FECHA";
+    cout << setw(12) << "   DNI";
+    cout << setw(15) << "APELLIDO";
+    cout << setw(15) << "NOMBRE";
+    cout << setw(20) << "DIAS ATRASADOS" << endl;
+
+    cout << "---------------------------------------------------------------------------------------------------------" << endl;
+
+
+    for (int i = 0; i < size; i++) {
+        if (deudores[i].getDeuda()) {
+            cout << left;
+            cout << setw(8) << deudores[i].getIdPago();
+            cout << setw(15) <<deudores[i].getUltimoPago().toString();
+            cout << setw(12) << deudores[i].getDni();
+            cout << setw(15) << deudores[i].getApellido();
+            cout << setw(15) << deudores[i].getNombre();
+            cout << setw(30) << deudores[i].getDiasAtrasado();
+
+            cout << endl;
+        }
+    }
+    cout << endl << endl << endl << endl;
+
+    delete[]deudores;
+
+    system("pause");
+    system("cls");
 
 }
 int Presentacion::Menuconfigurar() {

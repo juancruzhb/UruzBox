@@ -25,14 +25,39 @@ void Deudor::setDiasAtrasado(int dias)
 	_diasAtrasado = dias;
 }
 
+void Deudor::setDni(int dni)
+{
+	_dni = dni;
+}
+
 void Deudor::setDeuda(bool e)
 {
 	_deuda = e;
 }
 
+void Deudor::setIdPago(int id)
+{
+	_idPago = id;
+}
+
+void Deudor::setUltimoPago(Fecha fecha)
+{
+	_ultimoPago = fecha;
+}
+
 int Deudor::getIdAlumno()
 {
 	return _idAlumno;
+}
+
+int Deudor::getDni()
+{
+	return _dni;
+}
+
+int Deudor::getIdPago()
+{
+	return _idPago;
 }
 
 int Deudor::getDiasAtrasado()
@@ -57,6 +82,11 @@ std::string Deudor::getApellido()
 	std::string apellido;
 	apellido = _apellido;
 	return apellido;
+}
+
+Fecha Deudor::getUltimoPago()
+{
+	return _ultimoPago;
 }
 
 float Deudor::getImporte()

@@ -294,11 +294,15 @@ Deudor ReglasLogicas::obtenerDeudor(int reg)
 	int pagos = _accesoDatos.cantidad_registros_pagos();
 	Fecha actual;
 	Fecha ultimoPago;
+	Fecha fechaDePago;
+	int  Idpago = -1;
 
 	for (int i = 0; i < pagos; i++) {
 		Pagos pago = _accesoDatos.obtenerPago(i);
 		if (pago.getIdAlumno() == alumno.getId()) {
 			ultimoPago = pago.getFechaHasta();
+			fechaDePago = pago.getFecha();
+			Idpago = pago.getId();
 		}
 	}
 	int diasAtrasados = calcularDiasAtrasados(actual, ultimoPago);
@@ -306,10 +310,13 @@ Deudor ReglasLogicas::obtenerDeudor(int reg)
 	Deudor deudor;
 	deudor.setApellido(alumno.getApellido());
 	deudor.setNombre(alumno.getNombre());
+	deudor.setDni(alumno.getDni());
 	deudor.setIdAlumno(alumno.getId());
+	deudor.setIdPago(Idpago);
 	deudor.setDiasAtrasado(diasAtrasados);
 	deudor.setDeuda(false);
 	deudor.setImporte(100);
+	deudor.setUltimoPago(fechaDePago);
 
 	if (actual > ultimoPago) {
 		deudor.setDeuda(true);
