@@ -272,7 +272,7 @@ int Presentacion::MenuReportes() {
         system("cls");
         cout << "Menu Reportes" << endl;
         cout << "--------------------------" << endl;
-        cout << "1 - Cuotas atrasadas" << endl;
+        cout << "1 - Alumnos por fecha de ingreso" << endl;
         cout << "2 -" << endl;
         cout << "3 - Exportar alumnos" << endl;
         cout << "0 - Regresar al menu principal" << endl << endl;
@@ -281,7 +281,36 @@ int Presentacion::MenuReportes() {
 
         switch (opcion) {
         case 1:
-            
+        {
+            int dd, mm, aa, dh, mh, ah;
+            cout << "Desde dia: ";
+            cin >> dd;
+            cout << endl;
+
+            cout << "Desde Mes: ";
+            cin >> mm;
+            cout << endl;
+
+            cout << "Desde Anio: ";
+            cin >> aa;
+            cout << endl;
+
+            cout << "Hasta dia: ";
+            cin >> dh;
+            cout << endl;
+
+            cout << "hasta Mes: ";
+            cin >> mh;
+            cout << endl;
+
+            cout << "Hasta anio: ";
+            cin >> ah;
+            cout << endl;
+
+            Fecha desde(dd, mm, aa);
+            Fecha hasta(dh, mh, ah);
+            reporteAlumnosFecha(desde, hasta);
+        }
             break;
         case 2:
             //mostrarAsistencias();
@@ -767,6 +796,108 @@ void Presentacion::eliminarAlumno() {
         system("pause");
     }
 
+}
+void Presentacion::reporteAlumnosFecha(Fecha desde, Fecha hasta) {
+    int contador = 0;
+    int cantidad = _reglasLogicas.cantidadDeAlumnos();
+    Alumno* alumnos = new Alumno[cantidad];
+    if (alumnos == nullptr) {
+        cout << endl;
+        cout << "Error al mostrar los alumnos" << endl << endl;
+        return;
+    }
+    for (int i = 0; i < cantidad; i++) {
+        alumnos[i] = _reglasLogicas.obtenerAlumno(i);
+    }
+    system("cls");
+
+    cout << left;
+    cout << setw(4) << "ID";
+    cout << setw(12) << "   DNI";
+    cout << setw(15) << "APELLIDO";
+    cout << setw(15) << "NOMBRE";
+    cout << setw(6) << "EDAD";
+    cout << setw(25) << "      EMAIL";
+    cout << setw(15) << "CELULAR";
+    cout << setw(15) << "MIEMBRO DESDE";
+    cout << setw(15) << "SUSCRIPCION" << endl;
+
+    cout << "---------------------------------------------------------------------------------------------------------" << endl;
+    
+    for (int i = 0; i < cantidad; i++) {
+        if (alumnos[i].getActivo() && (alumnos[i].getFechaAlta()>desde && alumnos[i].getFechaAlta()<hasta)) {
+            cout << left;
+            cout << setw(4) << alumnos[i].getId();
+            cout << setw(12) << alumnos[i].getDni();
+            cout << setw(15) << alumnos[i].getApellido();
+            cout << setw(15) << alumnos[i].getNombre();
+            cout << setw(6)  << alumnos[i].getEdad();
+            cout << setw(25) << alumnos[i].getContacto().getMail();
+            cout << setw(15) << alumnos[i].getContacto().getCelular();
+            cout << setw(15) << alumnos[i].mostrarFechaAlta();
+            cout << setw(15) << alumnos[i].getSuscripcionString();
+            contador++;
+            cout << endl;
+        }
+    }
+    cout << "TOTAL: " << contador;
+    cout << endl << endl << endl << endl;
+ 
+    delete[]alumnos;
+
+    system("pause");
+    system("cls");
+}
+void Presentacion::reportePagosFecha(Fecha desde, Fecha hasta) {
+    int cantidadCobros = _reglasLogicas.cantidadDePagos();
+    int cantidadAlum = _reglasLogicas.cantidadDeAlumnos();
+    Pagos* aux = new Pagos[cantidadCobros];
+    Alumno* reg = new Alumno[cantidadAlum];
+
+    if (aux == nullptr || reg == nullptr) {
+        cout << endl << endl;
+        cout << "No se pudo listar los cobros";
+        cout << endl << endl;
+    }
+    for (int i = 0; i < cantidadCobros; i++) {
+        aux[i] = _reglasLogicas.obtenerPago(i);
+    }
+    for (int j = 0; j < cantidadAlum; j++) {
+        reg[j] = _reglasLogicas.obtenerAlumno(j);
+    }
+
+
+    system("cls");
+    cout << left;
+    cout << setw(10) << "ID COBRO";
+    cout << setw(15) << "APELLIDO";
+    cout << setw(15) << "NOMBRE";
+    cout << setw(15) << "MONTO";
+    cout << setw(15) << "DESDE";
+    cout << setw(15) << "HASTA" << endl;
+
+
+    cout << "-------------------------------------------------------" << endl;
+
+    for (int i = 0; i < cantidadCobros; i++) {
+        for (int j = 0; j < cantidadAlum; j++) {
+            if (aux[i].getIdAlumno() == reg[j].getId() && (reg[i].getFechaAlta() > desde && reg[i].getFechaAlta() < hasta)) {
+                cout << left;
+                cout << setw(10) << aux[i].getId();
+                cout << setw(12) << reg[j].getApellido();
+                cout << setw(15) << reg[j].getNombre();
+                cout << setw(15) << aux[j].getImporte();
+                cout << setw(15) << aux[i].getFechaDesde().toString();
+                cout << setw(15) << aux[i].getFechaHasta().toString();
+                cout << endl;
+            }
+        }
+    }
+    cout << endl << endl << endl << endl;
+    delete[]aux;
+    delete[]reg;
+    system("pause");
+    system("cls");
 }
 
 int opcionesBuscar() {

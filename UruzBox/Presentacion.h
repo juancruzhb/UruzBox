@@ -20,5 +20,7 @@ public:
 	void cobrarCuota(int Ndni = 0);
 	void exportarAlumnos();
 	void eliminarAlumno();
+	void reporteAlumnosFecha(Fecha desde, Fecha hasta);
+	void reportePagosFecha(Fecha desde, Fecha hasta);
 };
 

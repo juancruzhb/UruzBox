@@ -18,6 +18,12 @@ public:
         if (_dia > fecha._dia && _mes == fecha._mes && _anio >= fecha._anio) return true;
         return false;
     }
+    bool operator < (Fecha fecha) {
+        if (_anio < fecha._anio)return true;
+        if (_mes < fecha._mes && _anio <= fecha._anio)return true;
+        if (_dia < fecha._dia && _mes == fecha._mes && _anio <= fecha._anio) return true;
+        return false;
+    }
 
 private:
     int _dia, _mes, _anio;
