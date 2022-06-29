@@ -275,11 +275,6 @@ int Presentacion::MenuReportes() {
         cout << "1 - Cuotas atrasadas" << endl;
         cout << "2 -" << endl;
         cout << "3 - Exportar alumnos" << endl;
-
-        //cout << "1 - Exportar alumnos" << endl;
-        //cout << "2 - Editar Alumno" << endl;
-        //cout << "3 - Eliminar Alumno" << endl;
-        //cout << "--------------------------" << endl;
         cout << "0 - Regresar al menu principal" << endl << endl;
         cout << "Opcion: ";
         cin >> opcion;
@@ -312,8 +307,6 @@ int Presentacion::MenuCobranzas() {
         cout << "--------------------------" << endl;
         cout << "1 - Ingresar un pago" << endl;
         cout << "2 - CashFlow Alumno" << endl;
-       // cout << "3 - ";
-        //cout << "--------------------------" << endl;
         cout << "0 - Regresar al menu principal" << endl << endl;
         cout << "Opcion: ";
         cin >> opcion;
