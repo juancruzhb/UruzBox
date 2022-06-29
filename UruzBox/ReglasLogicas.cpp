@@ -4,12 +4,14 @@
 #include "Fecha.h"
 #include"AccesoDatos.h"
 #include <iomanip>
-#include <vector>
+#include <ctime>
 using namespace std;
 
 AccesoDatos _accesoDatos;
 
 //prototipos
+int calcularDiasAtrasados(Fecha actual, Fecha ultimoPago);
+
 #pragma region Manipulacion de Alumnos
 
 bool confirmarIngreso(Alumno reg);
@@ -299,7 +301,8 @@ Deudor ReglasLogicas::obtenerDeudor(int reg)
 			ultimoPago = pago.getFechaHasta();
 		}
 	}
-	int diasAtrasados = 10;
+	int diasAtrasados = calcularDiasAtrasados(actual, ultimoPago);
+
 	Deudor deudor;
 	deudor.setApellido(alumno.getApellido());
 	deudor.setNombre(alumno.getNombre());
@@ -334,3 +337,26 @@ Config ReglasLogicas::obtenerConfig(int reg) {
 	return _accesoDatos.obtenerConfig(reg);
 }
 #pragma endregion
+
+int calcularDiasAtrasados(Fecha actual, Fecha ultimoPago) {
+	int ddB = actual.getDia();
+	int mmB = actual.getMes();
+	int aaB = actual.getAnio() - 1900;
+
+	int ddA = ultimoPago.getDia();
+	int mmA = ultimoPago.getMes();
+	int aaA = ultimoPago.getAnio() - 1900;
+
+	int diferencia = 0;
+	struct std::tm a = { 0,0,0,ddA,mmA,aaA }; 
+	struct std::tm b = { 0,0,0,ddB,mmB,aaB }; 
+	std::time_t x = std::mktime(&a);
+	std::time_t y = std::mktime(&b);
+	if (x != (std::time_t)(-1) && y != (std::time_t)(-1))
+	{
+		diferencia = std::difftime(y, x) / (60 * 60 * 24);
+		
+	}
+	return diferencia;
+
+}

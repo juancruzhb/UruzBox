@@ -25,7 +25,7 @@ public:
 
 	bool ingresarConfig(Config config);
 	int cantidadConfig();
-	Config obtenerConfig(int reg);
+	Config obtenerConfig(int reg);;
 	bool existeAlumno(int dni);
 	bool existeAlumnoPorApellido(std::string apellido);
 
