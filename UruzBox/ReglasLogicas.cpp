@@ -100,6 +100,9 @@ Alumno ReglasLogicas::obtenerAlumno(int reg, int dni) {
 		return _accesoDatos.obtenerAlumno(_accesoDatos.obtenerRegistroPorDni(dni));
 	}
 }
+int ReglasLogicas::obtenerRegistroAlumnoPorDni(int dni) {
+	return _accesoDatos.obtenerRegistroPorDni(dni);
+}
 
 int ReglasLogicas::cantidadDeAlumnos(){
 	return _accesoDatos.cantidad_registros_alumnos();

@@ -3,11 +3,14 @@
 #include "Presentacion.h"
 #include"ReglasLogicas.h"
 #include"Config.h"
+#include <cstdlib>
+
+
 using namespace std;
 
 ReglasLogicas _reglasLogicas;
 
-Alumno opcionesBuscar();
+int opcionesBuscar();
 Fecha obtenerFechaHasta(Fecha desde);
 bool nuevaConfiguracion();
 void verConfiguracionActual();
@@ -25,8 +28,9 @@ int Presentacion::MenuPrincipal()
         cout << "2 - Gestion de Alumnos" << endl;
         cout << "3 - Cobranzas" << endl;
         cout << "4 - Listados" << endl;
-        cout << "5 - Reportes" << endl;
-        cout << "6 - Configurar" << endl;
+        cout << "5 - Consultas" << endl;
+        cout << "6 - Reportes" << endl;
+        cout << "7 - Configurar" << endl;
         cout << "--------------------------" << endl;
         cout << "0 - Salir del programa" << endl << endl;
 
@@ -46,10 +50,18 @@ int Presentacion::MenuPrincipal()
         case 4:
             MenuListados();
             break;
-        case 5:
-            MenuReportes();
+        case 5: 
+        {
+            //ConsultaAlumno(opcionesBuscar());     
+            int reg = opcionesBuscar();
+            //mostrarAsistencias(reg);
+            mostrarPagos(reg);
+        }
             break;
         case 6:
+            MenuReportes();
+            break;
+        case 7:
             Menuconfigurar();
             break;
         case 0:
@@ -103,8 +115,11 @@ int Presentacion::MenuAlumnos() {
             break;
         case 2:
         {
-            Alumno alumno = opcionesBuscar();
-            MenuEditarAlumno(alumno);
+            int reg = opcionesBuscar();
+            if (reg >= 0) {
+                Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
+                MenuEditarAlumno(alumno);
+            }
         }
             break;
         case 3:
@@ -240,10 +255,15 @@ int Presentacion::MenuListados() {
 
 }
 int Presentacion::MenuAsistencias() {
-    if (_reglasLogicas.ingresarAsistencia(opcionesBuscar())) {
+    
+    int reg = opcionesBuscar();
+    if (reg >= 0) {
+    Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
+    if (_reglasLogicas.ingresarAsistencia(alumno)) {
         cout << endl << endl;
         cout << "Se ha ingreado la asistencia con exito" << endl;
         system("pause");
+        }
     }
     return 0;
 }
@@ -344,7 +364,6 @@ void Presentacion::mostrarAlumnos() {
 
     cout << "---------------------------------------------------------------------------------------------------------" << endl;
 
-    
     for (int i = 0; i < cantidad; i++) {
         if (alumnos[i].getActivo()) {
             cout << left;
@@ -368,7 +387,43 @@ void Presentacion::mostrarAlumnos() {
    system("pause");
    system("cls");
 }
-void Presentacion::mostrarAsistencias() {
+void Presentacion::ConsultaAlumno(int reg) {
+    Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
+
+    system("cls");
+
+    cout << left;
+    cout << setw(4) << "ID";
+    cout << setw(12) << "   DNI";
+    cout << setw(15) << "APELLIDO";
+    cout << setw(15) << "NOMBRE";
+    cout << setw(6) << "EDAD";
+    cout << setw(25) << "      EMAIL";
+    cout << setw(15) << "CELULAR";
+    cout << setw(15) << "MIEMBRO DESDE";
+    cout << setw(15) << "SUSCRIPCION" << endl;
+
+    cout << "---------------------------------------------------------------------------------------------------------" << endl;
+    cout << left;
+    cout << setw(4) << alumno.getId();
+    cout << setw(12) << alumno.getDni();
+    cout << setw(15) << alumno.getApellido();
+    cout << setw(15) << alumno.getNombre();
+    cout << setw(6) << alumno.getEdad();
+    cout << setw(25) << alumno.getContacto().getMail();
+    cout << setw(15) << alumno.getContacto().getCelular();
+    cout << setw(15) << alumno.mostrarFechaAlta();
+    cout << setw(15) << alumno.getSuscripcionString();
+
+    cout << endl;
+    cout << endl << endl << endl << endl;
+
+
+    system("pause");
+    system("cls");
+}
+void Presentacion::mostrarAsistencias(int Nreg) {
+   
     int cantidadAsis = _reglasLogicas.cantidadDeAsistencias();
     int cantidadAlum = _reglasLogicas.cantidadDeAlumnos();
     Asistencia* aux = new Asistencia[cantidadAsis];
@@ -395,7 +450,27 @@ void Presentacion::mostrarAsistencias() {
     cout << setw(15) << "FECHA" << endl;
 
     cout << "-------------------------------------------------------" << endl;
-
+    if (Nreg >= 0) {
+        Alumno seleccionado = _reglasLogicas.obtenerAlumno(Nreg);
+        for (int i = 0; i < cantidadAsis; i++) {
+            for (int j = 0; j < cantidadAlum; j++) {
+                if (aux[i].getIdAlumno() == reg[j].getId() && reg[j].getId()==seleccionado.getId()) {
+                    cout << left;
+                    cout << setw(6) << aux[i].getId();
+                    cout << setw(12) << reg[j].getApellido();
+                    cout << setw(15) << reg[j].getNombre();
+                    cout << setw(15) << aux[i].getFecha().toString();
+                    cout << endl;
+                }
+            }
+        }
+        cout << endl << endl << endl << endl;
+        delete[]aux;
+        delete[]reg;
+        system("pause");
+        system("cls");
+        return;
+    }
 
     for (int i = 0; i < cantidadAsis; i++) {
         for (int j = 0; j < cantidadAlum; j++) {
@@ -467,7 +542,7 @@ void Presentacion::cobrarCuota(int Ndni) {
     }
     system("pause");
 }
-void Presentacion::mostrarPagos() {
+void Presentacion::mostrarPagos(int Nreg) {
     int cantidadCobros = _reglasLogicas.cantidadDePagos();
     int cantidadAlum = _reglasLogicas.cantidadDeAlumnos();
     Pagos* aux = new Pagos[cantidadCobros];
@@ -498,6 +573,29 @@ void Presentacion::mostrarPagos() {
 
     cout << "-------------------------------------------------------" << endl;
 
+    if (Nreg >= 0) {
+        Alumno seleccionado = _reglasLogicas.obtenerAlumno(Nreg);
+        for (int i = 0; i < cantidadCobros; i++) {
+            for (int j = 0; j < cantidadAlum; j++) {
+                if (aux[i].getIdAlumno() == reg[j].getId() && reg[j].getId() == seleccionado.getId()) {
+                    cout << left;
+                    cout << setw(10) << aux[i].getId();
+                    cout << setw(12) << reg[j].getApellido();
+                    cout << setw(15) << reg[j].getNombre();
+                    cout << setw(15) << aux[j].getImporte();
+                    cout << setw(15) << aux[i].getFechaDesde().toString();
+                    cout << setw(15) << aux[i].getFechaHasta().toString();
+                    cout << endl;
+                }
+            }
+        }
+        cout << endl << endl << endl << endl;
+        delete[]aux;
+        delete[]reg;
+        system("pause");
+        system("cls");
+        return;
+    }
 
     for (int i = 0; i < cantidadCobros; i++) {
         for (int j = 0; j < cantidadAlum; j++) {
@@ -626,17 +724,19 @@ void Presentacion::exportarAlumnos() {
 void Presentacion::eliminarAlumno() {
     system("cls");
 
-    Alumno alumno = opcionesBuscar();
-    if (_reglasLogicas.eliminarAlumno(alumno)){
-        cout<<endl<<"Se ha eliminado el alumno correctamente";
+    int reg = opcionesBuscar();
+    if (reg >= 0) {
+        Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
+        if (_reglasLogicas.eliminarAlumno(alumno)){
+            cout<<endl<<"Se ha eliminado el alumno correctamente";
+        }
+
+        system("pause");
     }
-
-    system("pause");
-
 
 }
 
-Alumno opcionesBuscar() {
+int opcionesBuscar() {
     system("cls");
     int opcion, dni;
     std::string apellido;
@@ -651,24 +751,27 @@ Alumno opcionesBuscar() {
         cin >> dni;
         while (!_reglasLogicas.existeAlumno(dni)) {
             cout << endl << "EL DNI INGRESADO NO SE ENCUENTRA EN EL REGISTRO" << endl;
-            cout << "Ingrese el DNI: ";
+            cout << "Ingrese el DNI (0) para salir: ";
             cin >> dni;
+            if (dni == 0) return -2;
         }
-            return _reglasLogicas.obtenerAlumno(-1, dni);
+        return _reglasLogicas.obtenerRegistroAlumnoPorDni(dni);
     }
     else if (opcion == 2) {
         cout << "Apellido: ";
         cin >> apellido;
         while (!_reglasLogicas.existeAlumnoPorApellido(apellido)) {
             cout << endl << "EL APELLIDO INGRESADO NO SE ENCUENTRA EN EL REGISTRO" << endl;
-            cout << "Ingrese el apellido: ";
+            cout << "Ingrese el apellido (0) para salir: ";
             cin >> apellido;
+            int op = atoi(apellido.c_str());
+            if (op == 0) return - 2;
         }
         Alumno seleccionado = _reglasLogicas.obtenerAlumnoConApellidoRepetido(apellido);
         cout << endl << endl;
         cout << "Ha seleccionado: " << seleccionado.getApellido() << ", " << seleccionado.getNombre() << endl;
         system("pause");
-        return seleccionado;
+        return _reglasLogicas.obtenerRegistroAlumnoPorDni(seleccionado.getDni());
     }
 }
 Fecha obtenerFechaHasta(Fecha desde) {

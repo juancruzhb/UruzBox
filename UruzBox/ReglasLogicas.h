@@ -12,6 +12,7 @@ public:
 	bool eliminarAlumno(Alumno alumno);
 	bool editarAlumno(Alumno alumno);
 	Alumno obtenerAlumno(int reg, int dni = 0);
+	int obtenerRegistroAlumnoPorDni(int dni);
 	int cantidadDeAlumnos();
 
 	bool ingresarAsistencia(Alumno alumno);

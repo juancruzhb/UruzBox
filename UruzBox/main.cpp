@@ -9,10 +9,8 @@ using namespace std;
 int main() {
 
 	Presentacion _presentacion;
-	//_presentacion.MenuPrincipal();
-
-	_presentacion.mostrarCuotasAtrasadas();
-
-
+	_presentacion.MenuPrincipal();
 	return 0;
 }
+
+//TODO: VER LA EDICION AGREGO A OTRO EN VEZ DE EDITAR 

@@ -12,8 +12,9 @@ public:
 	int MenuCobranzas();
 	int Menuconfigurar();
 	void mostrarAlumnos();
-	void mostrarAsistencias();
-	void mostrarPagos();
+	void ConsultaAlumno(int reg);
+	void mostrarAsistencias(int nReg = -1);
+	void mostrarPagos(int nReg = -1);
 	void mostrarCuotasAtrasadas();
 	void cobrarCuota(int Ndni = 0);
 	void exportarAlumnos();
