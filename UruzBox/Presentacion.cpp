@@ -255,7 +255,11 @@ int Presentacion::MenuReportes() {
         system("cls");
         cout << "Menu Reportes" << endl;
         cout << "--------------------------" << endl;
-        cout << "1 - Exportar alumnos" << endl;
+        cout << "1 - Cuotas atrasadas" << endl;
+        cout << "2 -" << endl;
+        cout << "3 - Exportar alumnos" << endl;
+
+        //cout << "1 - Exportar alumnos" << endl;
         //cout << "2 - Editar Alumno" << endl;
         //cout << "3 - Eliminar Alumno" << endl;
         //cout << "--------------------------" << endl;
@@ -265,10 +269,13 @@ int Presentacion::MenuReportes() {
 
         switch (opcion) {
         case 1:
-            exportarAlumnos();
+            
             break;
         case 2:
             //mostrarAsistencias();
+            break;
+        case 3:
+            exportarAlumnos();
             break;
         case 0:
             cout << "Opcion: ";
@@ -288,7 +295,7 @@ int Presentacion::MenuCobranzas() {
         cout << "--------------------------" << endl;
         cout << "1 - Ingresar un pago" << endl;
         cout << "2 - CashFlow Alumno" << endl;
-        cout << "3 - ";
+       // cout << "3 - ";
         //cout << "--------------------------" << endl;
         cout << "0 - Regresar al menu principal" << endl << endl;
         cout << "Opcion: ";
@@ -511,6 +518,9 @@ void Presentacion::mostrarPagos() {
     delete[]reg;
     system("pause");
     system("cls");
+}
+void Presentacion::mostrarCuotasAtrasadas() {
+
 }
 int Presentacion::Menuconfigurar() {
     system("cls");

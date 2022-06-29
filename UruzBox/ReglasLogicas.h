@@ -4,6 +4,7 @@
 #include"Asistencia.h"
 #include "Pagos.h"
 #include"Config.h"
+#include"Deudor.h"
 class ReglasLogicas
 {
 public:
@@ -30,5 +31,7 @@ public:
 
 
 	Alumno obtenerAlumnoConApellidoRepetido(std::string apellido);
+
+	Deudor obtenerDeudor(int reg);
 };
 

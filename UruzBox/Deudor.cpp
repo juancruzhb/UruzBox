@@ -20,9 +20,29 @@ void Deudor::setImporte(float importe)
 	_importe = importe;
 }
 
+void Deudor::setDiasAtrasado(int dias)
+{
+	_diasAtrasado = dias;
+}
+
+void Deudor::setDeuda(bool e)
+{
+	_deuda = e;
+}
+
 int Deudor::getIdAlumno()
 {
 	return _idAlumno;
+}
+
+int Deudor::getDiasAtrasado()
+{
+	return _diasAtrasado;
+}
+
+bool Deudor::getDeuda()
+{
+	return _deuda;
 }
 
 std::string Deudor::getNombre()

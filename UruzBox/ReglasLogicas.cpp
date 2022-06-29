@@ -216,36 +216,15 @@ Alumno ReglasLogicas::obtenerAlumnoConApellidoRepetido(std::string apellido) {
 	
 	Alumno seleccionado = alumnos[opcion - 1];
 
-	delete aux;
-	delete alumnos;
+	delete []aux;
+	delete []alumnos;
 	return seleccionado;
 
 
 }
 
-/*std::vector<Alumno> alumnosConElMismoApellido(std::string apellido) {
-	int mismoApellido = 0;
-	int size = _accesoDatos.cantidad_registros_alumnos();
-	Alumno *todos = new Alumno[size];
-	for (int i = 0; i < size; i++) {
-		todos[i] = _accesoDatos.obtenerAlumno(i);
-		if (todos[i].getApellido() == apellido) {
-			mismoApellido++;
-		}
-	}
-	std::vector<Alumno> alumnos(mismoApellido);
-	int pos = 0;
 
-	for (int j = 0; j < size; j++) {
-		if (alumnos[j].getApellido() == apellido) {
-			alumnos[pos] = todos[j];
-			pos++;
-		}
-	}
-	delete todos;
-	return alumnos;
 
-}*/
 #pragma endregion
 
 #pragma region Manipulacion de Asistencias
@@ -303,6 +282,43 @@ Pagos ReglasLogicas::obtenerUltimoPago(int id) {
 }
 
 #pragma endregion
+
+
+#pragma region Deudores
+
+Deudor ReglasLogicas::obtenerDeudor(int reg)
+{
+	Alumno alumno = _accesoDatos.obtenerAlumno(reg);
+	int pagos = _accesoDatos.cantidad_registros_pagos();
+	Fecha actual;
+	Fecha ultimoPago;
+
+	for (int i = 0; i < pagos; i++) {
+		Pagos pago = _accesoDatos.obtenerPago(i);
+		if (pago.getIdAlumno() == alumno.getId()) {
+			ultimoPago = pago.getFechaHasta();
+		}
+	}
+	int diasAtrasados = 10;
+	Deudor deudor;
+	deudor.setApellido(alumno.getApellido());
+	deudor.setNombre(alumno.getNombre());
+	deudor.setIdAlumno(alumno.getId());
+	deudor.setDiasAtrasado(diasAtrasados);
+	deudor.setDeuda(false);
+	deudor.setImporte(100);
+
+	if (actual > ultimoPago) {
+		deudor.setDeuda(true);
+		return deudor;
+	}
+
+	return deudor;
+
+}
+
+#pragma endregion
+
 
 #pragma region Config
 float ReglasLogicas::obtenerImporte(int tipoSus) {

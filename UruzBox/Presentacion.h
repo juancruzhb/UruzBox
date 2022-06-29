@@ -14,6 +14,7 @@ public:
 	void mostrarAlumnos();
 	void mostrarAsistencias();
 	void mostrarPagos();
+	void mostrarCuotasAtrasadas();
 	void cobrarCuota(int Ndni = 0);
 	void exportarAlumnos();
 	void eliminarAlumno();
