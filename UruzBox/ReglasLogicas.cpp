@@ -9,9 +9,11 @@ using namespace std;
 
 AccesoDatos _accesoDatos;
 
-//prototipos
+#pragma region Prototipos
 int calcularDiasAtrasados(Fecha actual, Fecha ultimoPago);
 void mostrarMensaje2(string mensaje, int color, int colorFondo, int x, int y);
+#pragma endregion
+
 
 #pragma region Manipulacion de Alumnos
 
@@ -54,23 +56,26 @@ int ReglasLogicas::ingresarAlumno() {
 	system("cls");
 	cout << "DNI: " << dni << endl;
 	Alumno alumno = solicitarDatosAlumno(dni);
-	if (_accesoDatos.grabarAlumnoEnDisco(alumno)) {
-		char opcion;
-		cout << "Ha ingresado los siguientes datos" << endl << endl;
-		mostrarDatosAlumno(alumno);
-		cout << "Desea confirmar la carga de los datos? (s/n): ";
-		cin >> opcion;
-		if (tolower(opcion) == 's') {
+	char opcion;
+	cout << "Ha ingresado los siguientes datos" << endl << endl;
+	mostrarDatosAlumno(alumno);
+	cout << "Desea confirmar la carga de los datos? (s/n): ";
+	cin >> opcion;
+	if (tolower(opcion) == 's') {
+		if (_accesoDatos.grabarAlumnoEnDisco(alumno)) {
 			string mensaje = "El alumno fue ingresado con exito";
 			mostrarMensaje2(mensaje, 0, 2, 0, 0);
 			system("pause");
+			return 1;
 		}
-		else {
-			return 0;
-		}
+		
 	}
-
-
+	else {
+		string mensaje = "No se grabo el alumno";
+		mostrarMensaje2(mensaje, 0, 4, 0, 0);
+		system("pause");
+		return 0;
+	}
 	return 0;
 }
 bool ReglasLogicas::eliminarAlumno(Alumno alumno) {
