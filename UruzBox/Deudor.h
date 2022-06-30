@@ -13,6 +13,7 @@ private:
 	float _importe;
 	Fecha _ultimoPago;
 	bool _deuda;
+	bool _activo;
 public:
 	void setIdAlumno(int id);
 	void setNombre(std::string nombre);
@@ -21,6 +22,7 @@ public:
 	void setDiasAtrasado(int dias);
 	void setDni(int dni);
 	void setDeuda(bool e);
+	void setActivo(bool e);
 	void setIdPago(int id);
 	void setUltimoPago(Fecha fecha);
 	int getIdAlumno();
@@ -28,6 +30,7 @@ public:
 	int getIdPago();
 	int getDiasAtrasado();
 	bool getDeuda();
+	bool getActivo();
 	std::string getNombre();
 	std::string getApellido();
 	Fecha getUltimoPago();

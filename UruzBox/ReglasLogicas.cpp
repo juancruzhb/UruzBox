@@ -320,6 +320,7 @@ Deudor ReglasLogicas::obtenerDeudor(int reg)
 	deudor.setDeuda(false);
 	deudor.setImporte(100);
 	deudor.setUltimoPago(fechaDePago);
+	deudor.setActivo(alumno.getActivo());
 
 	if (actual > ultimoPago) {
 		deudor.setDeuda(true);

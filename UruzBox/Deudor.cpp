@@ -35,6 +35,11 @@ void Deudor::setDeuda(bool e)
 	_deuda = e;
 }
 
+void Deudor::setActivo(bool e)
+{
+	_activo = e;
+}
+
 void Deudor::setIdPago(int id)
 {
 	_idPago = id;
@@ -68,6 +73,11 @@ int Deudor::getDiasAtrasado()
 bool Deudor::getDeuda()
 {
 	return _deuda;
+}
+
+bool Deudor::getActivo()
+{
+	return _activo;
 }
 
 std::string Deudor::getNombre()

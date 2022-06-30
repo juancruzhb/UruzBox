@@ -53,7 +53,7 @@ int Presentacion::MenuPrincipal()
             MenuAlumnos();
             break;
         case 3:
-            cobrarCuota();
+            MenuCobranzas();
             break;
         case 4:
             MenuListados();
@@ -328,16 +328,17 @@ int Presentacion::MenuCobranzas() {
         cout << "Cobranzas" << endl;
         cout << "--------------------------" << endl;
         cout << "1 - Ingresar un pago" << endl;
-        cout << "2 - CashFlow Alumno" << endl;
+        cout << "2 - Pagos atrasados" << endl;
         cout << "0 - Regresar al menu principal" << endl << endl;
         cout << "Opcion: ";
         cin >> opcion;
 
         switch (opcion) {
         case 1:
+            cobrarCuota();
             break;
         case 2:
-            //mostrarAsistencias();
+            mostrarCuotasAtrasadas();
             break;
         case 0:
             cout << "Opcion: ";
@@ -701,7 +702,7 @@ void Presentacion::mostrarCuotasAtrasadas() {
 
 
     for (int i = 0; i < size; i++) {
-        if (deudores[i].getDeuda()) {
+        if (deudores[i].getDeuda() && deudores[i].getActivo()) {
             cout << left;
             cout << setw(8) << deudores[i].getIdPago();
             cout << setw(15) <<deudores[i].getUltimoPago().toString();
