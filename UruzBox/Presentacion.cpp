@@ -441,7 +441,7 @@ int Presentacion::Menuconfigurar() {
 }
 #pragma endregion
 
-#pragma region Mostrar datos
+#pragma region Procesos de datos
 void Presentacion::mostrarAlumnos() {
 
     int cantidad = _reglasLogicas.cantidadDeAlumnos();
@@ -805,7 +805,8 @@ void Presentacion::eliminarAlumno() {
     if (reg >= 0) {
         Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
         if (_reglasLogicas.eliminarAlumno(alumno)){
-            cout<<endl<<"Se ha eliminado el alumno correctamente";
+            string mensaje = "Se ha eliminado el alumno correctamente";
+            mostrarMensaje(mensaje, 0, 4, 0, 0);
         }
 
         system("pause");

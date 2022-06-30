@@ -2,7 +2,6 @@
 
 
 #pragma region Manipulacion de Alumnos
-
 bool AccesoDatos::grabarAlumnoEnDisco(Alumno alumno) {
 	FILE* p = fopen("alumnos.dat", "ab");
 	if (p == NULL) {
@@ -23,19 +22,6 @@ bool AccesoDatos::GuardarEnDisco(Alumno alumno, int dni) {
 	fclose(p);
 	return guardo;
 }
-
-Alumno AccesoDatos::obtenerAlumno(int reg) {
-	Alumno aux;
-
-	FILE* p = fopen("alumnos.dat", "rb");
-	//if (p == nullptr) return;
-
-	fseek(p, reg * sizeof(Alumno), SEEK_SET);
-	bool ok = fread(&aux, sizeof(Alumno), 1, p);
-	fclose(p);
-	return aux;
-}
-
 bool AccesoDatos::leerDeDisco(int reg) {
 	//Alumno aux;
 	FILE* p = fopen("alumnos.dat", "rb");
@@ -47,8 +33,7 @@ bool AccesoDatos::leerDeDisco(int reg) {
 	fclose(p);
 	return ok;
 }
-
-int AccesoDatos::cantidad_registros_alumnos() {
+int  AccesoDatos::cantidad_registros_alumnos() {
 	FILE *p = fopen("alumnos.dat", "rb");
 	if (p == NULL) {
 		return 0;
@@ -63,8 +48,7 @@ int AccesoDatos::cantidad_registros_alumnos() {
 	cantidad = bytes / sizeof(Alumno);
 	return cantidad;
 }
-
-int AccesoDatos::obtenerRegistroPorDni(int dni) {
+int  AccesoDatos::obtenerRegistroPorDni(int dni) {
 	int cantidad = cantidad_registros_alumnos();
 	for (int i = 0; i < cantidad; i++) {
 		if (obtenerAlumno(i).getDni() == dni) {
@@ -73,8 +57,7 @@ int AccesoDatos::obtenerRegistroPorDni(int dni) {
 	}
 	return -1;
 }
-
-int AccesoDatos::obtenerRegistroPorApellido(std::string apellido) {
+int  AccesoDatos::obtenerRegistroPorApellido(std::string apellido) {
 	int cantidad = cantidad_registros_alumnos();
 	for (int i = 0; i < cantidad; i++) {
 		std::string aux = obtenerAlumno(i).getApellido();
@@ -84,6 +67,17 @@ int AccesoDatos::obtenerRegistroPorApellido(std::string apellido) {
 	}
 	return -1;
 
+}
+Alumno AccesoDatos::obtenerAlumno(int reg) {
+	Alumno aux;
+
+	FILE* p = fopen("alumnos.dat", "rb");
+	//if (p == nullptr) return;
+
+	fseek(p, reg * sizeof(Alumno), SEEK_SET);
+	bool ok = fread(&aux, sizeof(Alumno), 1, p);
+	fclose(p);
+	return aux;
 }
 #pragma endregion
 
@@ -97,17 +91,7 @@ bool AccesoDatos::grabarAsistenciaEnDisco(Asistencia asistencia) {
 	fclose(p);
 	return guardo;
 }
-Asistencia AccesoDatos::obtenerAsistencia(int reg) {
-	Asistencia aux;
-
-	FILE* p = fopen("asistencias.dat", "rb");
-
-	fseek(p, reg * sizeof(Asistencia), SEEK_SET);
-	bool ok = fread(&aux, sizeof(Asistencia), 1, p);
-	fclose(p);
-	return aux;
-}
-int AccesoDatos::cantidad_registros_asistencias() {
+int  AccesoDatos::cantidad_registros_asistencias() {
 	FILE* p = fopen("asistencias.dat", "rb");
 	if (p == NULL) {
 		return 0;
@@ -122,6 +106,16 @@ int AccesoDatos::cantidad_registros_asistencias() {
 	cantidad = bytes / sizeof(Asistencia);
 	return cantidad;
 }
+Asistencia AccesoDatos::obtenerAsistencia(int reg) {
+	Asistencia aux;
+
+	FILE* p = fopen("asistencias.dat", "rb");
+
+	fseek(p, reg * sizeof(Asistencia), SEEK_SET);
+	bool ok = fread(&aux, sizeof(Asistencia), 1, p);
+	fclose(p);
+	return aux;
+}
 #pragma endregion
 
 #pragma region Manipulacion de Pagos
@@ -134,7 +128,7 @@ bool AccesoDatos::grabarPagoEnDisco(Pagos pago) {
 	fclose(p);
 	return guardo;
 }
-int AccesoDatos::cantidad_registros_pagos() {
+int  AccesoDatos::cantidad_registros_pagos() {
 	FILE* p = fopen("pagos.dat", "rb");
 	if (p == NULL) {
 		return 0;
@@ -175,7 +169,7 @@ float AccesoDatos::obtenerImporte(int tipoSus) {
 	return 0;
 
 }
-bool AccesoDatos::grabarConfigDisco(Config config) {
+bool  AccesoDatos::grabarConfigDisco(Config config) {
 	FILE* p = fopen("config.dat", "wb");
 	if (p == NULL) {
 		return false;
@@ -184,7 +178,7 @@ bool AccesoDatos::grabarConfigDisco(Config config) {
 	fclose(p);
 	return guardo;
 }
-int AccesoDatos::cantidad_registros_config() {
+int   AccesoDatos::cantidad_registros_config() {
 	FILE* p = fopen("config.dat", "rb");
 	if (p == NULL) {
 		return 0;
