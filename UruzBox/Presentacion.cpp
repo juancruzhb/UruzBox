@@ -379,20 +379,26 @@ int Presentacion::MenuConsultas() {
         case 1:
             {
                 int reg = opcionesBuscar();
-                ConsultaAlumno(reg);
+                if (reg >= 0) {
+                    ConsultaAlumno(reg);
+                }
             }
             break;
 
         case 2:
         {
             int reg = opcionesBuscar();
-            mostrarAsistencias(reg);
+            if (reg >= 0) {
+                mostrarAsistencias(reg);
+            }
         }
             break;
         case 3:
         {
             int reg = opcionesBuscar();
-            mostrarPagos(reg);
+            if (reg >= 0) {
+                mostrarPagos(reg);
+            }
         }
         break;
         case 0:
@@ -418,32 +424,33 @@ void Presentacion::mostrarAlumnos() {
         alumnos[i] = _reglasLogicas.obtenerAlumno(i);
     }
     system("cls");
-
     cout << left;
+    cout << std::setfill(' ') << std::setw(136);
     cout << setw(4) << "ID";
-    cout << setw(12) << "   DNI";
+    cout << setw(12) << "DNI";
     cout << setw(15) << "APELLIDO";
     cout << setw(15) << "NOMBRE";
-    cout << setw(6) << "EDAD";
-    cout << setw(25) << "      EMAIL";
+    cout << setw(10) << "EDAD";
+    cout << setw(25) << "EMAIL";
     cout << setw(15) << "CELULAR";
-    cout << setw(15) << "MIEMBRO DESDE";
-    cout << setw(15) << "SUSCRIPCION" << endl;
+    cout << setw(20) << "MIEMBRO DESDE";
+    cout << setw(20) << "SUSCRIPCION" << endl;
 
-    cout << "---------------------------------------------------------------------------------------------------------" << endl;
+    cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 
     for (int i = 0; i < cantidad; i++) {
         if (alumnos[i].getActivo()) {
             cout << left;
+            cout << std::setfill(' ') << std::setw(136);
             cout << setw(4) << alumnos[i].getId();
             cout << setw(12) << alumnos[i].getDni();
             cout << setw(15) << alumnos[i].getApellido();
             cout << setw(15) << alumnos[i].getNombre();
-            cout << setw(6) << alumnos[i].getEdad();
+            cout << setw(10) << alumnos[i].getEdad();
             cout << setw(25) << alumnos[i].getContacto().getMail();
             cout << setw(15) << alumnos[i].getContacto().getCelular();
-            cout << setw(15) << alumnos[i].mostrarFechaAlta();
-            cout << setw(15) << alumnos[i].getSuscripcionString();
+            cout << setw(20) << alumnos[i].mostrarFechaAlta();
+            cout << setw(20) << alumnos[i].getSuscripcionString();
 
             cout << endl;
         }
@@ -459,20 +466,21 @@ void Presentacion::ConsultaAlumno(int reg) {
     Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
 
     system("cls");
-
+    cout << std::setfill(' ') << std::setw(122);
     cout << left;
     cout << setw(4) << "ID";
-    cout << setw(12) << "   DNI";
+    cout << setw(12) << "DNI";
     cout << setw(15) << "APELLIDO";
     cout << setw(15) << "NOMBRE";
     cout << setw(6) << "EDAD";
-    cout << setw(25) << "      EMAIL";
+    cout << setw(25) << "EMAIL";
     cout << setw(15) << "CELULAR";
     cout << setw(15) << "MIEMBRO DESDE";
     cout << setw(15) << "SUSCRIPCION" << endl;
 
-    cout << "---------------------------------------------------------------------------------------------------------" << endl;
+    cout << "---------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << left;
+    cout << std::setfill(' ') << std::setw(122);
     cout << setw(4) << alumno.getId();
     cout << setw(12) << alumno.getDni();
     cout << setw(15) << alumno.getApellido();
@@ -511,12 +519,13 @@ void Presentacion::mostrarAsistencias(int Nreg) {
 
 
     system("cls");
+    cout << std::setfill(' ') << std::setw(51);
     cout << left;
     cout << setw(6) << "ID";
     cout << setw(15) << "APELLIDO";
     cout << setw(15) << "NOMBRE";
     cout << setw(15) << "FECHA" << endl;
-
+    cout << std::setfill(' ') << std::setw(51);
     cout << "-------------------------------------------------------" << endl;
     if (Nreg >= 0) {
         Alumno seleccionado = _reglasLogicas.obtenerAlumno(Nreg);
@@ -525,7 +534,7 @@ void Presentacion::mostrarAsistencias(int Nreg) {
                 if (aux[i].getIdAlumno() == reg[j].getId() && reg[j].getId()==seleccionado.getId()) {
                     cout << left;
                     cout << setw(6) << aux[i].getId();
-                    cout << setw(12) << reg[j].getApellido();
+                    cout << setw(15) << reg[j].getApellido();
                     cout << setw(15) << reg[j].getNombre();
                     cout << setw(15) << aux[i].getFecha().toString();
                     cout << endl;
@@ -630,6 +639,7 @@ void Presentacion::mostrarPagos(int Nreg) {
 
 
     system("cls");
+    cout << std::setfill(' ') << std::setw(85);
     cout << left;
     cout << setw(10) << "RECIBO";
     cout << setw(15) << "APELLIDO";
@@ -639,13 +649,14 @@ void Presentacion::mostrarPagos(int Nreg) {
     cout << setw(15) << "HASTA" << endl;
 
 
-    cout << "-------------------------------------------------------" << endl;
+    cout << "--------------------------------------------------------------------------------------" << endl;
 
     if (Nreg >= 0) {
         Alumno seleccionado = _reglasLogicas.obtenerAlumno(Nreg);
         for (int i = 0; i < cantidadCobros; i++) {
             for (int j = 0; j < cantidadAlum; j++) {
                 if (aux[i].getIdAlumno() == reg[j].getId() && reg[j].getId() == seleccionado.getId()) {
+                    cout << std::setfill(' ') << std::setw(85);
                     cout << left;
                     cout << setw(10) << aux[i].getId();
                     cout << setw(12) << reg[j].getApellido();
@@ -703,6 +714,7 @@ void Presentacion::mostrarCuotasAtrasadas() {
     system("cls");
 
     cout << left;
+    cout << std::setfill(' ') << std::setw(85);
     cout << setw(8) << "RECIBO";
     cout << setw(15) << "FECHA";
     cout << setw(12) << "   DNI";
@@ -710,12 +722,15 @@ void Presentacion::mostrarCuotasAtrasadas() {
     cout << setw(15) << "NOMBRE";
     cout << setw(20) << "DIAS ATRASADOS" << endl;
 
-    cout << "---------------------------------------------------------------------------------------------------------" << endl;
+    cout << std::setfill(' ') << std::setw(85);
+
+    cout << "------------------------------------------------------------------------------------------" << endl;
 
 
     for (int i = 0; i < size; i++) {
         if (deudores[i].getDeuda() && deudores[i].getActivo()) {
             cout << left;
+            cout << std::setfill(' ') << std::setw(85);
             cout << setw(8) << deudores[i].getIdPago();
             cout << setw(15) <<deudores[i].getUltimoPago().toString();
             cout << setw(12) << deudores[i].getDni();
@@ -818,6 +833,7 @@ void Presentacion::reporteAlumnosFecha(Fecha desde, Fecha hasta) {
     system("cls");
 
     cout << left;
+    cout << std::setfill(' ') << std::setw(122);
     cout << setw(4) << "ID";
     cout << setw(12) << "   DNI";
     cout << setw(15) << "APELLIDO";
@@ -828,11 +844,12 @@ void Presentacion::reporteAlumnosFecha(Fecha desde, Fecha hasta) {
     cout << setw(15) << "MIEMBRO DESDE";
     cout << setw(15) << "SUSCRIPCION" << endl;
 
-    cout << "---------------------------------------------------------------------------------------------------------" << endl;
+    cout << "----------------------------------------------------------------------------------------------------------------------------" << endl;
     
     for (int i = 0; i < cantidad; i++) {
         if (alumnos[i].getActivo() && (alumnos[i].getFechaAlta()>=desde && alumnos[i].getFechaAlta()<=hasta)) {
             cout << left;
+            cout << std::setfill(' ') << std::setw(122);
             cout << setw(4) << alumnos[i].getId();
             cout << setw(12) << alumnos[i].getDni();
             cout << setw(15) << alumnos[i].getApellido();
@@ -875,6 +892,7 @@ void Presentacion::reportePagosFecha(Fecha desde, Fecha hasta) {
 
     system("cls");
     cout << left;
+    cout << std::setfill(' ') << std::setw(70);
     cout << setw(10) << "RECIBO";
     cout << setw(15) << "APELLIDO";
     cout << setw(15) << "NOMBRE";
@@ -882,14 +900,15 @@ void Presentacion::reportePagosFecha(Fecha desde, Fecha hasta) {
     cout << setw(15) << "FECHA" << endl;
 
 
-    cout << "-------------------------------------------------------" << endl;
+    cout << "------------------------------------------------------------------------" << endl;
 
     for (int i = 0; i < cantidadCobros; i++) {
         for (int j = 0; j < cantidadAlum; j++) {
             if (aux[i].getIdAlumno() == reg[j].getId() && (aux[i].getFecha() >= desde && aux[i].getFecha() <= hasta)) {
                 cout << left;
+                cout << std::setfill(' ') << std::setw(70);
                 cout << setw(10) << aux[i].getId();
-                cout << setw(12) << reg[j].getApellido();
+                cout << setw(15) << reg[j].getApellido();
                 cout << setw(15) << reg[j].getNombre();
                 cout << setw(15) << aux[j].getImporte();
                 cout << setw(15) << aux[i].getFecha().toString();
@@ -925,6 +944,7 @@ void Presentacion::reporteAsistenciasFecha(Fecha desde, Fecha hasta) {
 
     system("cls");
     cout << left;
+    cout << std::setfill(' ') << std::setw(51);
     cout << setw(6) << "ID";
     cout << setw(15) << "APELLIDO";
     cout << setw(15) << "NOMBRE";
@@ -935,6 +955,7 @@ void Presentacion::reporteAsistenciasFecha(Fecha desde, Fecha hasta) {
     for (int i = 0; i < cantidadAsis; i++) {
         for (int j = 0; j < cantidadAlum; j++) {
             if (aux[i].getIdAlumno() == reg[j].getId() && (aux[i].getFecha() >= desde && aux[i].getFecha() <= hasta)) {
+                cout << std::setfill(' ') << std::setw(51);
                 cout << left;
                 cout << setw(6) << aux[i].getId();
                 cout << setw(12) << reg[j].getApellido();
