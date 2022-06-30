@@ -98,15 +98,12 @@ int Presentacion::MenuAlumnos() {
         case 1:
         {
             int dni = _reglasLogicas.ingresarAlumno();
-            if (dni != 0) {
-                char opcion;
-                //cout << endl << endl;
-                string mensaje = "Se ha ingresado correctamente el alumno";
-                mostrarMensaje(mensaje, 0, 2,0 , 0);
+            if (dni > 0) {
+                char op;
                 cout << endl << endl;
                 cout << "Desea ingresar el pago de la suscripcion ahora? (s/n): ";
-                cin >> opcion;
-                if (tolower(opcion) == 's') {
+                cin >> op;
+                if (tolower(op) == 's') {
                     cobrarCuota(dni);
                 }
                 system("pause");
@@ -266,14 +263,14 @@ int Presentacion::MenuAsistencias() {
     
     int reg = opcionesBuscar();
     if (reg >= 0) {
-    Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
-    if (_reglasLogicas.ingresarAsistencia(alumno)) {
-        cout << endl << endl;
-        string mensaje = "Se ha ingresado la asistencia con exito";
-        mostrarMensaje(mensaje, 0, 2, 0, 500);
-        cout << endl << endl;
-        system("pause");
-        }
+        Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
+        if (_reglasLogicas.ingresarAsistencia(alumno)) {
+            cout << endl << endl;
+            string mensaje = "Se ha ingresado la asistencia con exito";
+            mostrarMensaje(mensaje, 0, 2, 0, 500);
+            cout << endl << endl;
+            system("pause");
+            }
     }
     return 0;
 }
@@ -729,7 +726,6 @@ void Presentacion::ConsultaAlumno(int reg) {
     system("cls");
 }
 void Presentacion::cobrarCuota(int Ndni) {
-    //TODO: si el DNI no existe pedir nuevamente los datos o 0 para salir
     system("cls");
     char opcion;
     int dni = Ndni;
@@ -739,7 +735,8 @@ void Presentacion::cobrarCuota(int Ndni) {
         cout << "Ingrese el DNI: ";
         cin >> dni;
         while (!_reglasLogicas.existeAlumno(dni)) {
-            cout << "No se ha encontrado el DNI en la base de datos. Ingreselo nuevamente (0 para salir):";
+            string mensaje = "No se ha encontrado el DNI en la base de datos.Ingreselo nuevamente(0 para salir) :";
+            mostrarMensaje(mensaje, 0, 4, 0, 0);
             cin >> dni;
             if (dni == 0) return;
         }
@@ -751,7 +748,6 @@ void Presentacion::cobrarCuota(int Ndni) {
 
     cout << "Precio correspondiente a la suscripcion: " << importe << endl;
     Pagos ultimoPago = _reglasLogicas.obtenerUltimoPago(id);
-    //ultimoPago.getIdAlumno() == id)
     if (true) {
         Fecha desde = ultimoPago.getFechaHasta();
         Fecha hasta = obtenerFechaHasta(desde);
@@ -774,11 +770,12 @@ void Presentacion::cobrarCuota(int Ndni) {
             if (tolower(opcion) == 's') {
                 if (_reglasLogicas.ingresarPago(alumno.getId(), importe, desde, hasta)) {
                     cout << endl;
-                    cout << "Se ha ingresado el pago con exito" << endl << endl;
+                    string mensaje = "Se ha ingresado el pago con exito";
+                    mostrarMensaje(mensaje, 0, 2, 0, 0);
+                    system("pause");
                }
             }
     }
-    system("pause");
 }
 void Presentacion::exportarAlumnos() {
     //TODO: exportar a csv
@@ -869,6 +866,7 @@ void Presentacion::reporteAlumnosFecha(Fecha desde, Fecha hasta) {
 void Presentacion::reportePagosFecha(Fecha desde, Fecha hasta) {
     int cantidadCobros = _reglasLogicas.cantidadDePagos();
     int cantidadAlum = _reglasLogicas.cantidadDeAlumnos();
+    float total = 0;
     Pagos* aux = new Pagos[cantidadCobros];
     Alumno* reg = new Alumno[cantidadAlum];
 
@@ -908,9 +906,12 @@ void Presentacion::reportePagosFecha(Fecha desde, Fecha hasta) {
                 cout << setw(15) << aux[j].getImporte();
                 cout << setw(15) << aux[i].getFecha().toString();
                 cout << endl;
+                total = +aux[i].getImporte();
             }
         }
     }
+    cout << endl << endl;
+    cout << "TOTAL: " << total;
     cout << endl << endl << endl << endl;
     delete[]aux;
     delete[]reg;
@@ -1179,6 +1180,9 @@ int opcionesBuscar() {
         cout << "Ha seleccionado: " << seleccionado.getApellido() << ", " << seleccionado.getNombre() << endl;
         system("pause");
         return _reglasLogicas.obtenerRegistroAlumnoPorDni(seleccionado.getDni());
+    }
+    else {
+        return -1;
     }
 }
 Fecha obtenerFechaHasta(Fecha desde) {

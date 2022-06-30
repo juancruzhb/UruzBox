@@ -60,7 +60,7 @@ int  ReglasLogicas::ingresarAlumno() {
 			string mensaje = "El alumno fue ingresado con exito";
 			mostrarMensaje2(mensaje, 0, 2, 0, 0);
 			system("pause");
-			return 1;
+			return alumno.getDni();
 		}
 		
 	}
@@ -252,10 +252,18 @@ Deudor ReglasLogicas::obtenerDeudor(int reg)
 	deudor.setUltimoPago(fechaDePago);
 	deudor.setActivo(alumno.getActivo());
 
+	if (deudor.getIdPago() < 0) {
+		diasAtrasados = calcularDiasAtrasados(actual, alumno.getFechaAlta());
+		deudor.setDiasAtrasado(diasAtrasados);
+		deudor.setDeuda(true);
+		return deudor;
+	}
+
 	if (actual > ultimoPago) {
 		deudor.setDeuda(true);
 		return deudor;
 	}
+	
 
 	return deudor;
 

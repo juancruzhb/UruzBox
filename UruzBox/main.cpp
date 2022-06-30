@@ -1,8 +1,4 @@
-#include<iostream>
-#include "Presentacion.h"
-#include "Fecha.h"
-#include"ReglasLogicas.h"
-#include"Deudor.h"
+#include"Presentacion.h"
 
 using namespace std;
 
@@ -13,5 +9,3 @@ int main() {
 	return 0;
 }
 
-//TODO: VER LA EDICION AGREGO A OTRO EN VEZ DE EDITAR 
-//TODO: SOBRECARGAR EL OPERADOR >=
