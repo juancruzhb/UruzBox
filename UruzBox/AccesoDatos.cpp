@@ -1,5 +1,4 @@
 #include "AccesoDatos.h"
-#include <iostream>
 
 
 #pragma region Manipulacion de Alumnos

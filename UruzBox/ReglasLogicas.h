@@ -6,6 +6,12 @@
 #include"Config.h"
 #include"Deudor.h"
 #include "rlutil.h"
+#include<iostream>
+#include<string>
+#include "Fecha.h"
+#include"AccesoDatos.h"
+#include <iomanip>
+#include <ctime>
 class ReglasLogicas
 {
 public:

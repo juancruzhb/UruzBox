@@ -1,5 +1,11 @@
 #pragma once
 #include"Alumno.h"
+#include <iostream>
+#include<iomanip>
+#include"ReglasLogicas.h"
+#include"Config.h"
+#include <cstdlib>
+#include"rlutil.h"
 class Presentacion
 {
 public:

@@ -2,6 +2,7 @@
 #include"Alumno.h"
 #include"Asistencia.h"
 #include"Pagos.h"
+#include <iostream>
 #include"Config.h"
 class AccesoDatos
 {
@@ -26,9 +27,6 @@ public:
 #pragma region Pagos
 	bool grabarPagoEnDisco(Pagos cobro);
 	Pagos obtenerPago(int reg);
-
-
-
 #pragma endregion
 
 #pragma region Config

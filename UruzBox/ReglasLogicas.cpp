@@ -1,10 +1,5 @@
 #include "ReglasLogicas.h"
-#include<iostream>
-#include<string>
-#include "Fecha.h"
-#include"AccesoDatos.h"
-#include <iomanip>
-#include <ctime>
+
 using namespace std;
 
 AccesoDatos _accesoDatos;
@@ -12,15 +7,14 @@ AccesoDatos _accesoDatos;
 #pragma region Prototipos
 int calcularDiasAtrasados(Fecha actual, Fecha ultimoPago);
 void mostrarMensaje2(string mensaje, int color, int colorFondo, int x, int y);
-#pragma endregion
-
-
-#pragma region Manipulacion de Alumnos
-
 bool confirmarIngreso(Alumno reg);
 void mostrarDatosAlumno(Alumno reg);
 Alumno solicitarDatosAlumno(int dni);
 
+#pragma endregion
+
+
+#pragma region Manipulacion de Alumnos
 bool ReglasLogicas::existeAlumno(int dni) {
 
 	int reg = _accesoDatos.obtenerRegistroPorDni(dni);
@@ -36,7 +30,7 @@ bool ReglasLogicas::existeAlumnoPorApellido(std::string apellido) {
 	}
 	return _accesoDatos.leerDeDisco(reg);
 }
-int ReglasLogicas::ingresarAlumno() {
+int  ReglasLogicas::ingresarAlumno() {
 	system("cls");
 	int dni;
 	cout << "Ingrese el DNI: ";
@@ -117,6 +111,12 @@ bool ReglasLogicas::editarAlumno(Alumno alumno) {
 		return false;
 	}
 }
+int  ReglasLogicas::obtenerRegistroAlumnoPorDni(int dni) {
+	return _accesoDatos.obtenerRegistroPorDni(dni);
+}
+int  ReglasLogicas::cantidadDeAlumnos(){
+	return _accesoDatos.cantidad_registros_alumnos();
+}
 
 Alumno ReglasLogicas::obtenerAlumno(int reg, int dni) {
 	if (dni == 0) {
@@ -127,91 +127,6 @@ Alumno ReglasLogicas::obtenerAlumno(int reg, int dni) {
 	else {
 		return _accesoDatos.obtenerAlumno(_accesoDatos.obtenerRegistroPorDni(dni));
 	}
-}
-int ReglasLogicas::obtenerRegistroAlumnoPorDni(int dni) {
-	return _accesoDatos.obtenerRegistroPorDni(dni);
-}
-
-int ReglasLogicas::cantidadDeAlumnos(){
-	return _accesoDatos.cantidad_registros_alumnos();
-}
-
-
-bool confirmarIngreso(Alumno reg) {
-	char opcion;
-	cout << endl << endl;
-	cout << "Uds ha ingresado los siguientes datos: " << endl<<endl<<endl;
-
-	mostrarDatosAlumno(reg);
-
-	cout << endl;
-	cout << endl << endl << endl << endl;
-
-	cout << "Desea confirmar el ingreso? (s/n): ";
-	cin >> opcion;
-	if (tolower(opcion) == 's') {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-void mostrarDatosAlumno(Alumno reg) {
-	cout << left;
-	cout << setw(12) << "   DNI";
-	cout << setw(15) << "APELLIDO";
-	cout << setw(15) << "NOMBRE";
-	cout << setw(15) << "FECHA";
-	cout << setw(25) << "      EMAIL";
-	cout << setw(15) << "CELULAR";
-	cout << setw(15) << "SUSCRIPCION" << endl;
-
-
-	cout << "-------------------------------------------------------------------------------------------------------------------" << endl;
-	cout << left;
-	cout << setw(12) << reg.getDni();
-	cout << setw(15) << reg.getApellido();
-	cout << setw(15) << reg.getNombre();
-	cout << setw(15) << reg.getFechaNac().toString();
-	cout << setw(25) << reg.getContacto().getMail();
-	cout << setw(15) << reg.getContacto().getCelular();
-	cout << setw(15) << reg.getSuscripcionString();
-
-	cout << endl;
-	cout << endl << endl << endl << endl;
-}
-Alumno solicitarDatosAlumno(int dni) {
-	char opcion;
-	int id = _accesoDatos.cantidad_registros_alumnos() + 1;
-	int dia, mes, anio, celular, suscripcion;
-	string nombre;
-	string apellido;
-	string mail; 
-
-	cout << "APELLIDO: ";
-	cin >> apellido;
-	cout << "NOMBRE: ";
-	cin >> nombre;
-	cout << "DIA DE NACIMIENTO: ";
-	cin >> dia;
-	cout << "MES DE NACIMIENTO: ";
-	cin >> mes;
-	cout << "ANIO DE NACIMIENTO: ";
-	cin >> anio; 
-	cout << "CELULAR: ";
-	cin >> celular;
-	cout << "E-MAIL: ";
-	cin >> mail;
-	cout << "Suscripcion:" << endl;
-	cout << " 1. 2 veces por semana" << endl;
-	cout << " 2. 3 veces por semana" << endl;
-	cout << " 3. Libre" << endl;
-	cout << "Opcion: ";
-	cin >> suscripcion;
-	Contacto contacto(celular,mail);
-	Fecha fecha(dia, mes, anio);
-	Alumno alumno(id, dni, apellido, nombre,fecha , contacto, suscripcion);
-	return alumno;
 }
 Alumno ReglasLogicas::obtenerAlumnoConApellidoRepetido(std::string apellido) {
 	int mismoApellido = 0;
@@ -250,31 +165,26 @@ Alumno ReglasLogicas::obtenerAlumnoConApellidoRepetido(std::string apellido) {
 
 }
 
-
-
 #pragma endregion
 
 #pragma region Manipulacion de Asistencias
-
 bool ReglasLogicas::ingresarAsistencia(Alumno alumno) {
 	int id = cantidadDeAsistencias() + 1;
 	int idAlumno = alumno.getId();
 	Asistencia asistencia(id, idAlumno);
 	return _accesoDatos.grabarAsistenciaEnDisco(asistencia);
 }
+int  ReglasLogicas::cantidadDeAsistencias() {
+	return _accesoDatos.cantidad_registros_asistencias();
+}
 
 Asistencia ReglasLogicas::obtenerAsistencia(int reg) {
 	return _accesoDatos.obtenerAsistencia(reg);
 }
-int ReglasLogicas::cantidadDeAsistencias() {
-	return _accesoDatos.cantidad_registros_asistencias();
-}
-
 #pragma endregion
 
 #pragma region Manipulacion de Pagos
-
-bool ReglasLogicas::ingresarPago(int idAlumno, float importe, Fecha desde, Fecha hasta) {
+bool  ReglasLogicas::ingresarPago(int idAlumno, float importe, Fecha desde, Fecha hasta) {
 	Fecha actual;
 	Pagos pago;
 	pago.setId(_accesoDatos.cantidad_registros_pagos()+1);
@@ -290,8 +200,7 @@ bool ReglasLogicas::ingresarPago(int idAlumno, float importe, Fecha desde, Fecha
 
 	return true;
 }
-
-int ReglasLogicas::cantidadDePagos() {
+int   ReglasLogicas::cantidadDePagos() {
 	return _accesoDatos.cantidad_registros_pagos();
 }
 Pagos ReglasLogicas::obtenerPago(int reg) {
@@ -307,7 +216,6 @@ Pagos ReglasLogicas::obtenerUltimoPago(int id) {
 	}
 	return ultimo;
 }
-
 #pragma endregion
 
 
@@ -357,13 +265,13 @@ Deudor ReglasLogicas::obtenerDeudor(int reg)
 
 
 #pragma region Config
-float ReglasLogicas::obtenerImporte(int tipoSus) {
+float  ReglasLogicas::obtenerImporte(int tipoSus) {
 	return _accesoDatos.obtenerImporte(tipoSus);
 }
-bool ReglasLogicas::ingresarConfig(Config config) {
+bool   ReglasLogicas::ingresarConfig(Config config) {
 	return _accesoDatos.grabarConfigDisco(config);
 }
-int ReglasLogicas::cantidadConfig() {
+int    ReglasLogicas::cantidadConfig() {
 	return _accesoDatos.cantidad_registros_config();
 }
 Config ReglasLogicas::obtenerConfig(int reg) {
@@ -371,6 +279,7 @@ Config ReglasLogicas::obtenerConfig(int reg) {
 }
 #pragma endregion
 
+#pragma region Funciones Auxiliares
 int calcularDiasAtrasados(Fecha actual, Fecha ultimoPago) {
 	int ddB = actual.getDia();
 	int mmB = actual.getMes();
@@ -393,7 +302,6 @@ int calcularDiasAtrasados(Fecha actual, Fecha ultimoPago) {
 	return diferencia;
 
 }
-
 void mostrarMensaje2(string mensaje, int color, int colorFondo, int x, int y) {
 	rlutil::saveDefaultColor();
 	rlutil::locate(x, y);
@@ -403,3 +311,80 @@ void mostrarMensaje2(string mensaje, int color, int colorFondo, int x, int y) {
 	cout << mensaje << endl << endl;
 	rlutil::resetColor();
 }
+bool confirmarIngreso(Alumno reg) {
+	char opcion;
+	cout << endl << endl;
+	cout << "Uds ha ingresado los siguientes datos: " << endl << endl << endl;
+
+	mostrarDatosAlumno(reg);
+
+	cout << endl;
+	cout << endl << endl << endl << endl;
+
+	cout << "Desea confirmar el ingreso? (s/n): ";
+	cin >> opcion;
+	if (tolower(opcion) == 's') {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+void mostrarDatosAlumno(Alumno reg) {
+	cout << left;
+	cout << setw(12) << "   DNI";
+	cout << setw(15) << "APELLIDO";
+	cout << setw(15) << "NOMBRE";
+	cout << setw(15) << "FECHA";
+	cout << setw(25) << "      EMAIL";
+	cout << setw(15) << "CELULAR";
+	cout << setw(15) << "SUSCRIPCION" << endl;
+
+
+	cout << "-------------------------------------------------------------------------------------------------------------------" << endl;
+	cout << left;
+	cout << setw(12) << reg.getDni();
+	cout << setw(15) << reg.getApellido();
+	cout << setw(15) << reg.getNombre();
+	cout << setw(15) << reg.getFechaNac().toString();
+	cout << setw(25) << reg.getContacto().getMail();
+	cout << setw(15) << reg.getContacto().getCelular();
+	cout << setw(15) << reg.getSuscripcionString();
+
+	cout << endl;
+	cout << endl << endl << endl << endl;
+}
+Alumno solicitarDatosAlumno(int dni) {
+	char opcion;
+	int id = _accesoDatos.cantidad_registros_alumnos() + 1;
+	int dia, mes, anio, celular, suscripcion;
+	string nombre;
+	string apellido;
+	string mail;
+
+	cout << "APELLIDO: ";
+	cin >> apellido;
+	cout << "NOMBRE: ";
+	cin >> nombre;
+	cout << "DIA DE NACIMIENTO: ";
+	cin >> dia;
+	cout << "MES DE NACIMIENTO: ";
+	cin >> mes;
+	cout << "ANIO DE NACIMIENTO: ";
+	cin >> anio;
+	cout << "CELULAR: ";
+	cin >> celular;
+	cout << "E-MAIL: ";
+	cin >> mail;
+	cout << "Suscripcion:" << endl;
+	cout << " 1. 2 veces por semana" << endl;
+	cout << " 2. 3 veces por semana" << endl;
+	cout << " 3. Libre" << endl;
+	cout << "Opcion: ";
+	cin >> suscripcion;
+	Contacto contacto(celular, mail);
+	Fecha fecha(dia, mes, anio);
+	Alumno alumno(id, dni, apellido, nombre, fecha, contacto, suscripcion);
+	return alumno;
+}
+#pragma endregion

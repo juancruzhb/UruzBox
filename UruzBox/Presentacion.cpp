@@ -1,11 +1,4 @@
-#include <iostream>
-#include<iomanip>
 #include "Presentacion.h"
-#include"ReglasLogicas.h"
-#include"Config.h"
-#include <cstdlib>
-#include"rlutil.h"
-
 
 using namespace std;
 
@@ -409,8 +402,46 @@ int Presentacion::MenuConsultas() {
         cin.ignore();
     }
 }
+int Presentacion::Menuconfigurar() {
+    system("cls");
+    int opcion;
+    char confirmarSalida;
+    while (true) {
+        system("cls");
+        cout << "CONFIGURACION" << endl;
+        cout << "--------------------------" << endl;
+        cout << "1 - Modificar valores de la cuota" << endl;
+        cout << "2 - Ver valor actuales" << endl;
+        //cout << "3 - Eliminar Alumno" << endl;
+        //cout << "--------------------------" << endl;
+        cout << "0 - Regresar al menu principal" << endl << endl;
+        cout << "Opcion: ";
+        cin >> opcion;
+        
+        switch (opcion) {
+        case 1:
+        {
+            nuevaConfiguracion();
+        }
+                    
+            break;
+        case 2:
+        {
+            verConfiguracionActual();
+        }
+
+        break;
+        case 0:
+            cout << "Opcion: ";
+            return 0;
+            break;
+        }
+        cin.ignore();
+    }
+}
 #pragma endregion
 
+#pragma region Mostrar datos
 void Presentacion::mostrarAlumnos() {
 
     int cantidad = _reglasLogicas.cantidadDeAlumnos();
@@ -461,42 +492,6 @@ void Presentacion::mostrarAlumnos() {
 
    system("pause");
    system("cls");
-}
-void Presentacion::ConsultaAlumno(int reg) {
-    Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
-
-    system("cls");
-    cout << std::setfill(' ') << std::setw(122);
-    cout << left;
-    cout << setw(4) << "ID";
-    cout << setw(12) << "DNI";
-    cout << setw(15) << "APELLIDO";
-    cout << setw(15) << "NOMBRE";
-    cout << setw(6) << "EDAD";
-    cout << setw(25) << "EMAIL";
-    cout << setw(15) << "CELULAR";
-    cout << setw(15) << "MIEMBRO DESDE";
-    cout << setw(15) << "SUSCRIPCION" << endl;
-
-    cout << "---------------------------------------------------------------------------------------------------------------------------" << endl;
-    cout << left;
-    cout << std::setfill(' ') << std::setw(122);
-    cout << setw(4) << alumno.getId();
-    cout << setw(12) << alumno.getDni();
-    cout << setw(15) << alumno.getApellido();
-    cout << setw(15) << alumno.getNombre();
-    cout << setw(6) << alumno.getEdad();
-    cout << setw(25) << alumno.getContacto().getMail();
-    cout << setw(15) << alumno.getContacto().getCelular();
-    cout << setw(15) << alumno.mostrarFechaAlta();
-    cout << setw(15) << alumno.getSuscripcionString();
-
-    cout << endl;
-    cout << endl << endl << endl << endl;
-
-
-    system("pause");
-    system("cls");
 }
 void Presentacion::mostrarAsistencias(int Nreg) {
    
@@ -566,58 +561,6 @@ void Presentacion::mostrarAsistencias(int Nreg) {
     delete []reg;
     system("pause");
     system("cls");
-}
-void Presentacion::cobrarCuota(int Ndni) {
-    //TODO: si el DNI no existe pedir nuevamente los datos o 0 para salir
-    system("cls");
-    char opcion;
-    int dni = Ndni;
-    int id;
-    float importe;
-    if(dni == 0){
-        cout << "Ingrese el DNI: ";
-        cin >> dni;
-        while (!_reglasLogicas.existeAlumno(dni)) {
-            cout << "No se ha encontrado el DNI en la base de datos. Ingreselo nuevamente (0 para salir):";
-            cin >> dni;
-            if (dni == 0) return;
-        }
-    }
-
-    Alumno alumno = _reglasLogicas.obtenerAlumno(-1, dni);
-    id = alumno.getId();
-    importe = _reglasLogicas.obtenerImporte(alumno.getSuscripcion());
-
-    cout << "Precio correspondiente a la suscripcion: " << importe << endl;
-    Pagos ultimoPago = _reglasLogicas.obtenerUltimoPago(id);
-    //ultimoPago.getIdAlumno() == id)
-    if (true) {
-        Fecha desde = ultimoPago.getFechaHasta();
-        Fecha hasta = obtenerFechaHasta(desde);
-        cout << left;
-        cout << setw(15) << "APELLIDO";
-        cout << setw(15) << "NOMBRE";
-        cout << setw(15) << "MONTO";
-        cout << setw(15) << "DESDE";
-        cout << setw(15) << "HASTA" << endl;
-        cout << "-------------------------------------------------------" << endl;
-        cout << left;
-        cout << setw(12) <<alumno.getApellido();
-        cout << setw(15) <<alumno.getNombre();
-        cout << setw(15) << importe;
-        cout << setw(15) <<desde.toString();
-        cout << setw(15) << hasta.toString();
-        cout << endl << endl;
-        cout << "Desea ingresar el pago? (s/n): ";
-            cin >> opcion;
-            if (tolower(opcion) == 's') {
-                if (_reglasLogicas.ingresarPago(alumno.getId(), importe, desde, hasta)) {
-                    cout << endl;
-                    cout << "Se ha ingresado el pago con exito" << endl << endl;
-               }
-            }
-    }
-    system("pause");
 }
 void Presentacion::mostrarPagos(int Nreg) {
     int cantidadCobros = _reglasLogicas.cantidadDePagos();
@@ -749,42 +692,93 @@ void Presentacion::mostrarCuotasAtrasadas() {
     system("cls");
 
 }
-int Presentacion::Menuconfigurar() {
-    system("cls");
-    int opcion;
-    char confirmarSalida;
-    while (true) {
-        system("cls");
-        cout << "CONFIGURACION" << endl;
-        cout << "--------------------------" << endl;
-        cout << "1 - Modificar valores de la cuota" << endl;
-        cout << "2 - Ver valor actuales" << endl;
-        //cout << "3 - Eliminar Alumno" << endl;
-        //cout << "--------------------------" << endl;
-        cout << "0 - Regresar al menu principal" << endl << endl;
-        cout << "Opcion: ";
-        cin >> opcion;
-        
-        switch (opcion) {
-        case 1:
-        {
-            nuevaConfiguracion();
-        }
-                    
-            break;
-        case 2:
-        {
-            verConfiguracionActual();
-        }
+void Presentacion::ConsultaAlumno(int reg) {
+    Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
 
-        break;
-        case 0:
-            cout << "Opcion: ";
-            return 0;
-            break;
+    system("cls");
+    cout << std::setfill(' ') << std::setw(122);
+    cout << left;
+    cout << setw(4) << "ID";
+    cout << setw(12) << "DNI";
+    cout << setw(15) << "APELLIDO";
+    cout << setw(15) << "NOMBRE";
+    cout << setw(6) << "EDAD";
+    cout << setw(25) << "EMAIL";
+    cout << setw(15) << "CELULAR";
+    cout << setw(15) << "MIEMBRO DESDE";
+    cout << setw(15) << "SUSCRIPCION" << endl;
+
+    cout << "---------------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << left;
+    cout << std::setfill(' ') << std::setw(122);
+    cout << setw(4) << alumno.getId();
+    cout << setw(12) << alumno.getDni();
+    cout << setw(15) << alumno.getApellido();
+    cout << setw(15) << alumno.getNombre();
+    cout << setw(6) << alumno.getEdad();
+    cout << setw(25) << alumno.getContacto().getMail();
+    cout << setw(15) << alumno.getContacto().getCelular();
+    cout << setw(15) << alumno.mostrarFechaAlta();
+    cout << setw(15) << alumno.getSuscripcionString();
+
+    cout << endl;
+    cout << endl << endl << endl << endl;
+
+
+    system("pause");
+    system("cls");
+}
+void Presentacion::cobrarCuota(int Ndni) {
+    //TODO: si el DNI no existe pedir nuevamente los datos o 0 para salir
+    system("cls");
+    char opcion;
+    int dni = Ndni;
+    int id;
+    float importe;
+    if(dni == 0){
+        cout << "Ingrese el DNI: ";
+        cin >> dni;
+        while (!_reglasLogicas.existeAlumno(dni)) {
+            cout << "No se ha encontrado el DNI en la base de datos. Ingreselo nuevamente (0 para salir):";
+            cin >> dni;
+            if (dni == 0) return;
         }
-        cin.ignore();
     }
+
+    Alumno alumno = _reglasLogicas.obtenerAlumno(-1, dni);
+    id = alumno.getId();
+    importe = _reglasLogicas.obtenerImporte(alumno.getSuscripcion());
+
+    cout << "Precio correspondiente a la suscripcion: " << importe << endl;
+    Pagos ultimoPago = _reglasLogicas.obtenerUltimoPago(id);
+    //ultimoPago.getIdAlumno() == id)
+    if (true) {
+        Fecha desde = ultimoPago.getFechaHasta();
+        Fecha hasta = obtenerFechaHasta(desde);
+        cout << left;
+        cout << setw(15) << "APELLIDO";
+        cout << setw(15) << "NOMBRE";
+        cout << setw(15) << "MONTO";
+        cout << setw(15) << "DESDE";
+        cout << setw(15) << "HASTA" << endl;
+        cout << "-------------------------------------------------------" << endl;
+        cout << left;
+        cout << setw(12) <<alumno.getApellido();
+        cout << setw(15) <<alumno.getNombre();
+        cout << setw(15) << importe;
+        cout << setw(15) <<desde.toString();
+        cout << setw(15) << hasta.toString();
+        cout << endl << endl;
+        cout << "Desea ingresar el pago? (s/n): ";
+            cin >> opcion;
+            if (tolower(opcion) == 's') {
+                if (_reglasLogicas.ingresarPago(alumno.getId(), importe, desde, hasta)) {
+                    cout << endl;
+                    cout << "Se ha ingresado el pago con exito" << endl << endl;
+               }
+            }
+    }
+    system("pause");
 }
 void Presentacion::exportarAlumnos() {
     //TODO: exportar a csv
@@ -1139,8 +1133,11 @@ int Presentacion::subMenuRangoFechaAsistencias() {
     }
 
 }
+#pragma endregion
 
 
+
+#pragma region Funciones auxilares
 int opcionesBuscar() {
     system("cls");
     int opcion, dni;
@@ -1351,3 +1348,5 @@ void mostrarMensaje(string mensaje, int color, int colorFondo, int x, int y) {
     cout << mensaje << endl << endl;
     rlutil::resetColor();
 }
+#pragma endregion
+
