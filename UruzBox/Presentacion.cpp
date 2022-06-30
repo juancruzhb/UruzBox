@@ -10,10 +10,17 @@ using namespace std;
 
 ReglasLogicas _reglasLogicas;
 
+#pragma region prototipos
 int opcionesBuscar();
 Fecha obtenerFechaHasta(Fecha desde);
 bool nuevaConfiguracion();
 void verConfiguracionActual();
+Fecha presenteMes();
+Fecha pideDesde();
+Fecha pideHasta();
+Fecha presenteAnio();
+#pragma endregion
+
 
 #pragma region Menus
 int Presentacion::MenuPrincipal()
@@ -273,8 +280,9 @@ int Presentacion::MenuReportes() {
         cout << "Menu Reportes" << endl;
         cout << "--------------------------" << endl;
         cout << "1 - Alumnos por fecha de ingreso" << endl;
-        cout << "2 -" << endl;
-        cout << "3 - Exportar alumnos" << endl;
+        cout << "2 - Asistencias por fecha" << endl;
+        cout << "3 - Pagos realizados por fecha" << endl;
+        cout << "5 - Exportar alumnos" << endl;
         cout << "0 - Regresar al menu principal" << endl << endl;
         cout << "Opcion: ";
         cin >> opcion;
@@ -282,40 +290,24 @@ int Presentacion::MenuReportes() {
         switch (opcion) {
         case 1:
         {
-            int dd, mm, aa, dh, mh, ah;
-            cout << "Desde dia: ";
-            cin >> dd;
-            cout << endl;
+            subMenuRangoFechaAlumnos();
 
-            cout << "Desde Mes: ";
-            cin >> mm;
-            cout << endl;
-
-            cout << "Desde Anio: ";
-            cin >> aa;
-            cout << endl;
-
-            cout << "Hasta dia: ";
-            cin >> dh;
-            cout << endl;
-
-            cout << "hasta Mes: ";
-            cin >> mh;
-            cout << endl;
-
-            cout << "Hasta anio: ";
-            cin >> ah;
-            cout << endl;
-
-            Fecha desde(dd, mm, aa);
-            Fecha hasta(dh, mh, ah);
-            reporteAlumnosFecha(desde, hasta);
         }
             break;
         case 2:
-            //mostrarAsistencias();
+        {
+            subMenuRangoFechaAsistencias();
+
+        }
+            
             break;
         case 3:
+        {
+            subMenuRangoFechaPagos();
+        }
+            
+            break;
+        case 4:
             exportarAlumnos();
             break;
         case 0:
@@ -825,7 +817,7 @@ void Presentacion::reporteAlumnosFecha(Fecha desde, Fecha hasta) {
     cout << "---------------------------------------------------------------------------------------------------------" << endl;
     
     for (int i = 0; i < cantidad; i++) {
-        if (alumnos[i].getActivo() && (alumnos[i].getFechaAlta()>desde && alumnos[i].getFechaAlta()<hasta)) {
+        if (alumnos[i].getActivo() && (alumnos[i].getFechaAlta()>=desde && alumnos[i].getFechaAlta()<=hasta)) {
             cout << left;
             cout << setw(4) << alumnos[i].getId();
             cout << setw(12) << alumnos[i].getDni();
@@ -869,26 +861,24 @@ void Presentacion::reportePagosFecha(Fecha desde, Fecha hasta) {
 
     system("cls");
     cout << left;
-    cout << setw(10) << "ID COBRO";
+    cout << setw(10) << "RECIBO";
     cout << setw(15) << "APELLIDO";
     cout << setw(15) << "NOMBRE";
     cout << setw(15) << "MONTO";
-    cout << setw(15) << "DESDE";
-    cout << setw(15) << "HASTA" << endl;
+    cout << setw(15) << "FECHA" << endl;
 
 
     cout << "-------------------------------------------------------" << endl;
 
     for (int i = 0; i < cantidadCobros; i++) {
         for (int j = 0; j < cantidadAlum; j++) {
-            if (aux[i].getIdAlumno() == reg[j].getId() && (reg[i].getFechaAlta() > desde && reg[i].getFechaAlta() < hasta)) {
+            if (aux[i].getIdAlumno() == reg[j].getId() && (aux[i].getFecha() >= desde && aux[i].getFecha() <= hasta)) {
                 cout << left;
                 cout << setw(10) << aux[i].getId();
                 cout << setw(12) << reg[j].getApellido();
                 cout << setw(15) << reg[j].getNombre();
                 cout << setw(15) << aux[j].getImporte();
-                cout << setw(15) << aux[i].getFechaDesde().toString();
-                cout << setw(15) << aux[i].getFechaHasta().toString();
+                cout << setw(15) << aux[i].getFecha().toString();
                 cout << endl;
             }
         }
@@ -899,6 +889,207 @@ void Presentacion::reportePagosFecha(Fecha desde, Fecha hasta) {
     system("pause");
     system("cls");
 }
+void Presentacion::reporteAsistenciasFecha(Fecha desde, Fecha hasta) {
+
+    int cantidadAsis = _reglasLogicas.cantidadDeAsistencias();
+    int cantidadAlum = _reglasLogicas.cantidadDeAlumnos();
+    Asistencia* aux = new Asistencia[cantidadAsis];
+    Alumno* reg = new Alumno[cantidadAlum];
+
+    if (aux == nullptr || reg == nullptr) {
+        cout << endl << endl;
+        cout << "No se pudo listar las asistencias";
+        cout << endl << endl;
+    }
+    for (int i = 0; i < cantidadAsis; i++) {
+        aux[i] = _reglasLogicas.obtenerAsistencia(i);
+    }
+    for (int j = 0; j < cantidadAlum; j++) {
+        reg[j] = _reglasLogicas.obtenerAlumno(j);
+    }
+
+
+    system("cls");
+    cout << left;
+    cout << setw(6) << "ID";
+    cout << setw(15) << "APELLIDO";
+    cout << setw(15) << "NOMBRE";
+    cout << setw(15) << "FECHA" << endl;
+
+    cout << "-------------------------------------------------------" << endl;
+
+    for (int i = 0; i < cantidadAsis; i++) {
+        for (int j = 0; j < cantidadAlum; j++) {
+            if (aux[i].getIdAlumno() == reg[j].getId() && (aux[i].getFecha() >= desde && aux[i].getFecha() <= hasta)) {
+                cout << left;
+                cout << setw(6) << aux[i].getId();
+                cout << setw(12) << reg[j].getApellido();
+                cout << setw(15) << reg[j].getNombre();
+                cout << setw(15) << aux[i].getFecha().toString();
+                cout << endl;
+            }
+        }
+    }
+    cout << endl << endl << endl << endl;
+    delete[]aux;
+    delete[]reg;
+    system("pause");
+    system("cls");
+}
+int Presentacion::subMenuRangoFechaAlumnos() {
+    system("cls");
+    int opcion;
+    char confirmarSalida;
+    while (true) {
+        cout << "Escoja el rango de fechas" << endl;
+        cout << "--------------------------" << endl;
+        cout << "1 - Presente semana" << endl;
+        cout << "2 - Presente Mes" << endl;
+        cout << "3 - Presente Anio" << endl;
+        cout << "4 - Ingresar rango de fechas" << endl;
+        cout << "--------------------------" << endl;
+        cout << "0 - Volver al menu principal" << endl << endl;
+
+        cout << "Opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1:
+
+            break;
+        case 2:
+        {
+            Fecha desde = presenteMes();
+            Fecha hasta;
+            reporteAlumnosFecha(desde, hasta);
+        }
+            break;
+        case 3:
+        {
+            Fecha desde = presenteAnio();
+            Fecha hasta;
+            reporteAlumnosFecha(desde, hasta);
+        }
+            break;
+        case 4:
+        {
+            Fecha desde = pideDesde();
+            Fecha hasta = pideDesde();
+            reporteAlumnosFecha(desde, hasta);
+        }
+        break;
+        case 0:
+            cout << "Opcion: ";
+            return 0;
+            break;
+        }
+        cin.ignore();
+    }
+
+}
+int Presentacion::subMenuRangoFechaPagos() {
+    system("cls");
+    int opcion;
+    char confirmarSalida;
+    while (true) {
+        cout << "Escoja el rango de fechas" << endl;
+        cout << "--------------------------" << endl;
+        cout << "1 - Presente semana" << endl;
+        cout << "2 - Presente Mes" << endl;
+        cout << "3 - Presente Anio" << endl;
+        cout << "4 - Ingresar rango de fechas" << endl;
+        cout << "--------------------------" << endl;
+        cout << "0 - Volver al menu principal" << endl << endl;
+
+        cout << "Opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1:
+
+            break;
+        case 2:
+        {
+            Fecha desde = presenteMes();
+            Fecha hasta;
+            reportePagosFecha(desde, hasta);
+        }
+        break;
+        case 3:
+        {
+            Fecha desde = presenteAnio();
+            Fecha hasta;
+            reportePagosFecha(desde, hasta);
+        }
+            break;
+        case 4:
+        {
+            Fecha desde = pideDesde();
+            Fecha hasta = pideDesde();
+            reportePagosFecha(desde, hasta);
+        }
+        break;
+        case 0:
+            cout << "Opcion: ";
+            return 0;
+            break;
+        }
+        cin.ignore();
+    }
+
+}
+int Presentacion::subMenuRangoFechaAsistencias() {
+    system("cls");
+    int opcion;
+    char confirmarSalida;
+    while (true) {
+        cout << "Escoja el rango de fechas" << endl;
+        cout << "--------------------------" << endl;
+        cout << "1 - Presente semana" << endl;
+        cout << "2 - Presente Mes" << endl;
+        cout << "3 - Presente Anio" << endl;
+        cout << "4 - Ingresar rango de fechas" << endl;
+        cout << "--------------------------" << endl;
+        cout << "0 - Volver al menu principal" << endl << endl;
+
+        cout << "Opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1:
+
+            break;
+        case 2:
+        {
+            Fecha desde = presenteMes();
+            Fecha hasta;
+            reporteAsistenciasFecha(desde, hasta);
+        }
+        break;
+        case 3:
+        {
+            Fecha desde = presenteAnio();
+            Fecha hasta;
+            reporteAsistenciasFecha(desde, hasta);
+        }
+            break;
+        case 4:
+        {
+            Fecha desde = pideDesde();
+            Fecha hasta = pideHasta();
+            reporteAsistenciasFecha(desde, hasta);
+        }
+        break;
+        case 0:
+            cout << "Opcion: ";
+            return 0;
+            break;
+        }
+        cin.ignore();
+    }
+
+}
+
 
 int opcionesBuscar() {
     system("cls");
@@ -1013,4 +1204,56 @@ void verConfiguracionActual() {
 
     delete[]actual;
     system("pause");
+}
+//Fecha presenteSemana() {
+
+//}
+Fecha presenteMes() {
+    Fecha actual;
+    Fecha aux;
+    if (actual.getMes() == 1) {
+        aux.setAnio(actual.getAnio() - 1);
+        aux.setMes(12);
+        aux.setDia (1);
+        return aux;
+    }
+    Fecha fecha(1, actual.getMes(), actual.getAnio());
+    return fecha;
+}
+Fecha presenteAnio() {
+    Fecha actual;
+    Fecha fecha(1, 1, actual.getAnio());
+    return fecha;
+}
+Fecha pideDesde() {
+    int dd, mm, aa;
+    cout << "Desde dia: ";
+    cin >> dd;
+    cout << endl;
+
+    cout << "Desde Mes: ";
+    cin >> mm;
+    cout << endl;
+
+    cout << "Desde Anio: ";
+    cin >> aa;
+    cout << endl;
+    Fecha desde(dd, mm, aa);
+    return desde;
+}
+Fecha pideHasta() {
+    int dd, mm, aa;
+    cout << "Hasta dia: ";
+    cin >> dd;
+    cout << endl;
+
+    cout << "hasta Mes: ";
+    cin >> mm;
+    cout << endl;
+
+    cout << "Hasta anio: ";
+    cin >> aa;
+
+    Fecha hasta(dd, mm, aa);
+    return hasta;
 }

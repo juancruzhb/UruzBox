@@ -22,5 +22,9 @@ public:
 	void eliminarAlumno();
 	void reporteAlumnosFecha(Fecha desde, Fecha hasta);
 	void reportePagosFecha(Fecha desde, Fecha hasta);
+	void reporteAsistenciasFecha(Fecha desde, Fecha hasta);
+	int subMenuRangoFechaAlumnos();
+	int subMenuRangoFechaPagos();
+	int subMenuRangoFechaAsistencias();
 };
 
