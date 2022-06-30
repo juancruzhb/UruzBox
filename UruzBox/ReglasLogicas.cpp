@@ -11,12 +11,13 @@ AccesoDatos _accesoDatos;
 
 //prototipos
 int calcularDiasAtrasados(Fecha actual, Fecha ultimoPago);
+void mostrarMensaje2(string mensaje, int color, int colorFondo, int x, int y);
 
 #pragma region Manipulacion de Alumnos
 
 bool confirmarIngreso(Alumno reg);
 void mostrarDatosAlumno(Alumno reg);
-Alumno solicitarDatosAlumno();
+Alumno solicitarDatosAlumno(int dni);
 
 bool ReglasLogicas::existeAlumno(int dni) {
 
@@ -34,21 +35,43 @@ bool ReglasLogicas::existeAlumnoPorApellido(std::string apellido) {
 	return _accesoDatos.leerDeDisco(reg);
 }
 int ReglasLogicas::ingresarAlumno() {
-	bool op = true;
-	while (op) {
-		Alumno alumno = solicitarDatosAlumno();
-		if (confirmarIngreso(alumno)) {
-			if (alumno.getId() < _accesoDatos.cantidad_registros_alumnos() + 1) {
-				alumno.setActivo(true);
-				_accesoDatos.GuardarEnDisco(alumno, alumno.getDni());
-				return alumno.getDni();
-			}
-			else {
-				_accesoDatos.grabarAlumnoEnDisco(alumno);
-				return alumno.getDni();
-			}
+	system("cls");
+	int dni;
+	cout << "Ingrese el DNI: ";
+	cin >> dni;
+	int reg = _accesoDatos.obtenerRegistroPorDni(dni);
+	while (reg >= 0) {
+		string mensaje = "El alumno ya existe";
+		mostrarMensaje2(mensaje, 0, 4, 0, 0);
+		cout << endl;
+		cout << "Ingrese nuevamente el dni (0 para salir): ";
+		cin >> dni;
+		if (dni == 0) {
+			return 0;
+		}
+		reg = _accesoDatos.obtenerRegistroPorDni(dni);
+	}
+	system("cls");
+	cout << "DNI: " << dni << endl;
+	Alumno alumno = solicitarDatosAlumno(dni);
+	if (_accesoDatos.grabarAlumnoEnDisco(alumno)) {
+		char opcion;
+		cout << "Ha ingresado los siguientes datos" << endl << endl;
+		mostrarDatosAlumno(alumno);
+		cout << "Desea confirmar la carga de los datos? (s/n): ";
+		cin >> opcion;
+		if (tolower(opcion) == 's') {
+			string mensaje = "El alumno fue ingresado con exito";
+			mostrarMensaje2(mensaje, 0, 2, 0, 0);
+			system("pause");
+		}
+		else {
+			return 0;
 		}
 	}
+
+
+	return 0;
 }
 bool ReglasLogicas::eliminarAlumno(Alumno alumno) {
 	char opcion;
@@ -139,7 +162,7 @@ void mostrarDatosAlumno(Alumno reg) {
 	cout << setw(15) << "SUSCRIPCION" << endl;
 
 
-	cout << "---------------------------------------------------------------------------------------------" << endl;
+	cout << "-------------------------------------------------------------------------------------------------------------------" << endl;
 	cout << left;
 	cout << setw(12) << reg.getDni();
 	cout << setw(15) << reg.getApellido();
@@ -152,39 +175,33 @@ void mostrarDatosAlumno(Alumno reg) {
 	cout << endl;
 	cout << endl << endl << endl << endl;
 }
-Alumno solicitarDatosAlumno() {
-	system("cls");
+Alumno solicitarDatosAlumno(int dni) {
 	char opcion;
 	int id = _accesoDatos.cantidad_registros_alumnos() + 1;
-	int dni, dia, mes, anio, celular, suscripcion;
+	int dia, mes, anio, celular, suscripcion;
 	string nombre;
 	string apellido;
 	string mail; 
-	cout << "DNI: ";
-	cin >> dni;
-	int reg = _accesoDatos.obtenerRegistroPorDni(dni);
-	if (reg !=-1) {
-		cout << "El alumno ya existe en los registros, desea recuperar datos? (s/n)" << endl;
-		cin >> opcion;
-		if (tolower(opcion) == 's') {
-			return _accesoDatos.obtenerAlumno(reg);
-		}
-	}
-	cout << "Apellido: ";
+
+	cout << "APELLIDO: ";
 	cin >> apellido;
-	cout << "Nombre: ";
+	cout << "NOMBRE: ";
 	cin >> nombre;
-	cout << "Dia de nacimiento: ";
+	cout << "DIA DE NACIMIENTO: ";
 	cin >> dia;
-	cout << "Mes de nacimiento: ";
+	cout << "MES DE NACIMIENTO: ";
 	cin >> mes;
-	cout << "Anio de nacimiento: ";
+	cout << "ANIO DE NACIMIENTO: ";
 	cin >> anio; 
-	cout << "Celular: ";
+	cout << "CELULAR: ";
 	cin >> celular;
-	cout << "E-Mail: ";
+	cout << "E-MAIL: ";
 	cin >> mail;
-	cout << "Suscripcion (1)2 veces por semana 2) 3 veces por semana - 3) Libre): ";
+	cout << "Suscripcion:" << endl;
+	cout << " 1. 2 veces por semana" << endl;
+	cout << " 2. 3 veces por semana" << endl;
+	cout << " 3. Libre" << endl;
+	cout << "Opcion: ";
 	cin >> suscripcion;
 	Contacto contacto(celular,mail);
 	Fecha fecha(dia, mes, anio);
@@ -370,4 +387,14 @@ int calcularDiasAtrasados(Fecha actual, Fecha ultimoPago) {
 	}
 	return diferencia;
 
+}
+
+void mostrarMensaje2(string mensaje, int color, int colorFondo, int x, int y) {
+	rlutil::saveDefaultColor();
+	rlutil::locate(x, y);
+	rlutil::setColor(color);
+	rlutil::setBackgroundColor(colorFondo);
+	cout << endl << endl;
+	cout << mensaje << endl << endl;
+	rlutil::resetColor();
 }

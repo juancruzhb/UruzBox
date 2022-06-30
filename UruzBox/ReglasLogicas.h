@@ -5,6 +5,7 @@
 #include "Pagos.h"
 #include"Config.h"
 #include"Deudor.h"
+#include "rlutil.h"
 class ReglasLogicas
 {
 public:

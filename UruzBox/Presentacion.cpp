@@ -4,6 +4,7 @@
 #include"ReglasLogicas.h"
 #include"Config.h"
 #include <cstdlib>
+#include"rlutil.h"
 
 
 using namespace std;
@@ -20,6 +21,7 @@ Fecha pideDesde();
 Fecha pideHasta();
 Fecha presenteAnio();
 Fecha presenteSemana();
+void mostrarMensaje(string mensaje, int color, int colorFondo, int x, int y);
 #pragma endregion
 
 
@@ -29,6 +31,8 @@ int Presentacion::MenuPrincipal()
     int opcion;
     char confirmarSalida;
     while (true) {
+        rlutil::setColor(rlutil::WHITE);
+        rlutil::setBackgroundColor(rlutil::LIGHTBLUE);
         system("cls");
         cout << "Menu Principal" << endl;
         cout << "--------------------------" << endl;
@@ -103,8 +107,10 @@ int Presentacion::MenuAlumnos() {
             int dni = _reglasLogicas.ingresarAlumno();
             if (dni != 0) {
                 char opcion;
+                //cout << endl << endl;
+                string mensaje = "Se ha ingresado correctamente el alumno";
+                mostrarMensaje(mensaje, 0, 2,0 , 0);
                 cout << endl << endl;
-                cout << "SE HA INGRESADO CORRECTAMENTE EL ALUMNO" << endl << endl;
                 cout << "Desea ingresar el pago de la suscripcion ahora? (s/n): ";
                 cin >> opcion;
                 if (tolower(opcion) == 's') {
@@ -113,7 +119,8 @@ int Presentacion::MenuAlumnos() {
                 system("pause");
             }
             else {
-                cout << endl << "No se pudo ingresar el alumno";
+                string mensaje = "No se pudo ingresar el alumno";
+                mostrarMensaje(mensaje, 0, 4, 0, 0);
             }
             
         }
@@ -209,7 +216,10 @@ int Presentacion::MenuEditarAlumno(Alumno reg) {
         case 5:
         {
             int sus;
-            cout << "Suscripcion: (1) 2 veces por semana - (2) 3 veces por semana - (3) Libre:  ";
+            cout << "Suscripcion:" << endl;
+            cout << " 1. 2 veces por semana" << endl;
+            cout << " 2. 3 veces por semana" << endl;
+            cout << " 3. Libre" << endl;
             cin >> sus;
             alumno.setSuscripcion(sus);
             _reglasLogicas.editarAlumno(alumno);
@@ -266,7 +276,9 @@ int Presentacion::MenuAsistencias() {
     Alumno alumno = _reglasLogicas.obtenerAlumno(reg);
     if (_reglasLogicas.ingresarAsistencia(alumno)) {
         cout << endl << endl;
-        cout << "Se ha ingreado la asistencia con exito" << endl;
+        string mensaje = "Se ha ingresado la asistencia con exito";
+        mostrarMensaje(mensaje, 0, 2, 0, 500);
+        cout << endl << endl;
         system("pause");
         }
     }
@@ -619,7 +631,7 @@ void Presentacion::mostrarPagos(int Nreg) {
 
     system("cls");
     cout << left;
-    cout << setw(10) << "ID COBRO";
+    cout << setw(10) << "RECIBO";
     cout << setw(15) << "APELLIDO";
     cout << setw(15) << "NOMBRE";
     cout << setw(15) << "MONTO";
@@ -691,7 +703,7 @@ void Presentacion::mostrarCuotasAtrasadas() {
     system("cls");
 
     cout << left;
-    cout << setw(8) << "PAGO NUMERO";
+    cout << setw(8) << "RECIBO";
     cout << setw(15) << "FECHA";
     cout << setw(12) << "   DNI";
     cout << setw(15) << "APELLIDO";
@@ -1122,7 +1134,8 @@ int opcionesBuscar() {
         cout << "Ingrese el DNI: ";
         cin >> dni;
         while (!_reglasLogicas.existeAlumno(dni)) {
-            cout << endl << "EL DNI INGRESADO NO SE ENCUENTRA EN EL REGISTRO" << endl;
+            string mensaje = "EL DNI INGRESADO NO SE ENCUENTRA EN EL REGISTRO";
+            mostrarMensaje(mensaje, 0, 4, 0, 500);
             cout << "Ingrese el DNI (0) para salir: ";
             cin >> dni;
             if (dni == 0) return -2;
@@ -1133,11 +1146,14 @@ int opcionesBuscar() {
         cout << "Apellido: ";
         cin >> apellido;
         while (!_reglasLogicas.existeAlumnoPorApellido(apellido)) {
-            cout << endl << "EL APELLIDO INGRESADO NO SE ENCUENTRA EN EL REGISTRO" << endl;
+            string mensaje = "EL APELLIDO INGRESADO NO SE ENCUENTRA EN EL REGISTRO";
+            mostrarMensaje(mensaje, 0, 4, 0, 500);
             cout << "Ingrese el apellido (0) para salir: ";
             cin >> apellido;
-            int op = atoi(apellido.c_str());
-            if (op == 0) return - 2;
+            if (apellido.length() == 1) {
+                int op = atoi(apellido.c_str());
+                if (op == 0) return - 2;
+            }
         }
         Alumno seleccionado = _reglasLogicas.obtenerAlumnoConApellidoRepetido(apellido);
         cout << endl << endl;
@@ -1304,4 +1320,13 @@ Fecha pideHasta() {
 
     Fecha hasta(dd, mm, aa);
     return hasta;
+}
+void mostrarMensaje(string mensaje, int color, int colorFondo, int x, int y) {
+    rlutil::saveDefaultColor();
+    rlutil::locate(x, y);
+    rlutil::setColor(color);
+    rlutil::setBackgroundColor(colorFondo);
+    cout << endl << endl;
+    cout << mensaje << endl << endl;
+    rlutil::resetColor();
 }
