@@ -19,6 +19,7 @@ Fecha presenteMes();
 Fecha pideDesde();
 Fecha pideHasta();
 Fecha presenteAnio();
+Fecha presenteSemana();
 #pragma endregion
 
 
@@ -955,6 +956,11 @@ int Presentacion::subMenuRangoFechaAlumnos() {
 
         switch (opcion) {
         case 1:
+        {
+            Fecha desde = presenteSemana();
+            Fecha hasta;
+            reporteAlumnosFecha(desde, hasta);
+        }
 
             break;
         case 2:
@@ -1006,6 +1012,11 @@ int Presentacion::subMenuRangoFechaPagos() {
 
         switch (opcion) {
         case 1:
+        {
+            Fecha desde = presenteSemana();
+            Fecha hasta;
+            reportePagosFecha(desde, hasta);
+        }
 
             break;
         case 2:
@@ -1057,6 +1068,11 @@ int Presentacion::subMenuRangoFechaAsistencias() {
 
         switch (opcion) {
         case 1:
+        {
+            Fecha desde = presenteSemana();
+            Fecha hasta;
+            reporteAsistenciasFecha(desde, hasta);
+        }
 
             break;
         case 2:
@@ -1205,9 +1221,40 @@ void verConfiguracionActual() {
     delete[]actual;
     system("pause");
 }
-//Fecha presenteSemana() {
+Fecha presenteSemana() {
+    Fecha actual;
+    int dia = actual.getDia();
+    int mes = actual.getMes();
+    int anyo = actual.getAnio();
+    int A = (14 - mes) / 12;
+    int Y = anyo - A;
+    int M = mes + (12 * A) - 2;
+    int diaSemana;
 
-//}
+    if (anyo >= 1582)       /// Inicio del calendario Gregoriano
+        diaSemana = (dia + Y + Y / 4 - Y / 100 + Y / 400 + (31 * M) / 12) % 7;
+
+    else        /// calendario Juliano
+        diaSemana = (5 + dia + Y + Y / 4 + (31 * M) / 12) % 7;
+
+    if (diaSemana > 0) diaSemana--;
+    else  diaSemana = 6;
+
+    int dd = actual.getDia();
+    switch (diaSemana) {
+
+    case 0: ; break;
+    case 1:dd = dd-1 ; break;
+    case 2:dd = dd-2 ; break;
+    case 3:dd = dd - 3; break;
+    case 4:dd = dd - 4; break;
+    case 5:dd = dd - 5; break;
+    case 6:dd = dd - 6; break;
+    }
+
+    Fecha fecha(dd, actual.getMes(), actual.getAnio());
+    return fecha;
+}
 Fecha presenteMes() {
     Fecha actual;
     Fecha aux;
