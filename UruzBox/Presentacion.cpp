@@ -656,7 +656,7 @@ void Presentacion::mostrarCuotasAtrasadas() {
     cout << std::setfill(' ') << std::setw(85);
     cout << setw(8) << "RECIBO";
     cout << setw(15) << "FECHA";
-    cout << setw(12) << "   DNI";
+    cout << setw(12) << "DNI";
     cout << setw(15) << "APELLIDO";
     cout << setw(15) << "NOMBRE";
     cout << setw(20) << "DIAS ATRASADOS" << endl;
