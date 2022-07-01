@@ -210,6 +210,7 @@ int Presentacion::MenuEditarAlumno(Alumno reg) {
             cout << " 1. 2 veces por semana" << endl;
             cout << " 2. 3 veces por semana" << endl;
             cout << " 3. Libre" << endl;
+            cout<<"Opcion: ";
             cin >> sus;
             alumno.setSuscripcion(sus);
             _reglasLogicas.editarAlumno(alumno);
@@ -409,8 +410,6 @@ int Presentacion::Menuconfigurar() {
         cout << "--------------------------" << endl;
         cout << "1 - Modificar valores de la cuota" << endl;
         cout << "2 - Ver valor actuales" << endl;
-        //cout << "3 - Eliminar Alumno" << endl;
-        //cout << "--------------------------" << endl;
         cout << "0 - Regresar al menu principal" << endl << endl;
         cout << "Opcion: ";
         cin >> opcion;
@@ -567,7 +566,7 @@ void Presentacion::mostrarPagos(int Nreg) {
 
     if (aux == nullptr || reg == nullptr) {
         cout << endl << endl;
-        cout << "No se pudo listar los cobros";
+        cout << "No se pudo listar los Pagos";
         cout << endl << endl;
     }
     for (int i = 0; i < cantidadCobros; i++) {
@@ -972,6 +971,8 @@ int Presentacion::subMenuRangoFechaAlumnos() {
     int opcion;
     char confirmarSalida;
     while (true) {
+        cout << "            ------Alumnos------" << endl;
+        cout << "-------------------------------------------" << endl << endl;
         cout << "Escoja el rango de fechas" << endl;
         cout << "--------------------------" << endl;
         cout << "1 - Presente semana" << endl;
@@ -1028,6 +1029,8 @@ int Presentacion::subMenuRangoFechaPagos() {
     int opcion;
     char confirmarSalida;
     while (true) {
+        cout << "            ------PAGOS------" << endl;
+        cout << "-------------------------------------------" << endl << endl;
         cout << "Escoja el rango de fechas" << endl;
         cout << "--------------------------" << endl;
         cout << "1 - Presente semana" << endl;
@@ -1084,6 +1087,8 @@ int Presentacion::subMenuRangoFechaAsistencias() {
     int opcion;
     char confirmarSalida;
     while (true) {
+        cout << "            ------Asistencias------" << endl;
+        cout << "-------------------------------------------" << endl << endl;
         cout << "Escoja el rango de fechas" << endl;
         cout << "--------------------------" << endl;
         cout << "1 - Presente semana" << endl;
@@ -1227,12 +1232,15 @@ bool nuevaConfiguracion() {
     Config config(tipo1, tipo2, tipo3);
     if (_reglasLogicas.ingresarConfig(config)) {
         cout << endl;
-        cout << "CAMBIOS GUARDADOS" << endl << endl;
+        string mensaje = "CAMBIOS GUARDADOS CON EXITO";
+        mostrarMensaje(mensaje, 0, 2, 0, 0);
         system("pause");
         return true;
     }
-    cout << "NO SE HAN PODIDO APLICAR LOS CAMBIOS" << endl << endl;
+    string mensaje = "NO SE HAN PODIDO APLICAR LOS CAMBIOS";
+    mostrarMensaje(mensaje, 0, 4, 0, 0);
     system("pause");
+    return false;
 }
 void verConfiguracionActual() {
     int size = _reglasLogicas.cantidadConfig();
@@ -1243,19 +1251,20 @@ void verConfiguracionActual() {
     }
     system("cls");
     cout << left;
+    cout << std::setfill(' ') << std::setw(60);
     cout << setw(20) << "2 VECES POR SEMANA";
     cout << setw(20) << "3 VECES POR SEMANA";
     cout << setw(20) << "       LIBRE      " << endl;
 
-    cout << "-------------------------------------------------------" << endl;
+    cout << "--------------------------------------------------------------" << endl;
 
     for (int i = 0; i < size; i++) {
          cout << left;
+         cout << std::setfill(' ') << std::setw(51);
          cout << setw(20) << actual[i].getT1();
          cout << setw(20) << actual[i].getT2();
          cout << setw(20) << actual[i].getT3();
          cout << endl;
-
     }
 
     delete[]actual;

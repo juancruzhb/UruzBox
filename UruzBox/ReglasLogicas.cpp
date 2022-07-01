@@ -86,6 +86,9 @@ bool ReglasLogicas::eliminarAlumno(Alumno alumno) {
 	cin >> opcion;
 	if (tolower(opcion) == 's') {
 		alumno.setActivo(false);
+		string mensaje = "El alumno ha sido eliminado con exito";
+		mostrarMensaje2(mensaje, 0, 4, 0, 0);
+		system("pause");
 		return _accesoDatos.GuardarEnDisco(alumno, alumno.getDni());
 	}
 	else {
@@ -120,9 +123,7 @@ int  ReglasLogicas::cantidadDeAlumnos(){
 
 Alumno ReglasLogicas::obtenerAlumno(int reg, int dni) {
 	if (dni == 0) {
-		//if (_accesoDatos.obtenerAlumno(reg).getActivo()) {
 			return _accesoDatos.obtenerAlumno(reg);
-		//}
 	}
 	else {
 		return _accesoDatos.obtenerAlumno(_accesoDatos.obtenerRegistroPorDni(dni));
@@ -340,17 +341,19 @@ bool confirmarIngreso(Alumno reg) {
 }
 void mostrarDatosAlumno(Alumno reg) {
 	cout << left;
-	cout << setw(12) << "   DNI";
+	cout << std::setfill(' ') << std::setw(112);
+	cout << setw(12) << "DNI";
 	cout << setw(15) << "APELLIDO";
 	cout << setw(15) << "NOMBRE";
 	cout << setw(15) << "FECHA";
-	cout << setw(25) << "      EMAIL";
+	cout << setw(25) << "EMAIL";
 	cout << setw(15) << "CELULAR";
 	cout << setw(15) << "SUSCRIPCION" << endl;
 
 
 	cout << "-------------------------------------------------------------------------------------------------------------------" << endl;
 	cout << left;
+	cout << std::setfill(' ') << std::setw(112);
 	cout << setw(12) << reg.getDni();
 	cout << setw(15) << reg.getApellido();
 	cout << setw(15) << reg.getNombre();
